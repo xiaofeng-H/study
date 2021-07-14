@@ -41,3 +41,79 @@ func TestSubLinkList(t *testing.T) {
 		A.PrintLinkList()
 	}
 }
+
+func TestArrayReverse(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	for _, v := range a {
+		fmt.Printf("%d\t", v)
+	}
+	fmt.Println()
+	ArrayReverse(a)
+	fmt.Println("---After reverse---")
+	for _, v := range a {
+		fmt.Printf("%d\t", v)
+	}
+	fmt.Println()
+}
+
+func TestLinkListReverse(t *testing.T) {
+	var data = []int{1, 2, 3, 4, 5, 6}
+	ln := dataStructures.LNode{Next: nil, Data: len(data)}
+	ln.CreateListR(data)
+	fmt.Println("---Before LinkList Reverse---")
+	ln.PrintLinkList()
+	LinkListReverse(&ln)
+	fmt.Println("---After LinkList Reverse")
+	ln.PrintLinkList()
+}
+
+func TestOnceQuickSort(t *testing.T) {
+	a := []int{5, 8, 6, 4, 1, 3, 7, 2, 9, 10, 5, -1, 9, -6, 55, -3}
+	for _, v := range a {
+		fmt.Printf("%d\t", v)
+	}
+	fmt.Println()
+	OnceQuickSort(a)
+	fmt.Println("---After once quick sort---")
+	for _, v := range a {
+		fmt.Printf("%d\t", v)
+	}
+	fmt.Println()
+}
+
+func TestGetMinByI(t *testing.T) {
+	var data = []int{8, 7, 3, 4, 5, 6, 9}
+	min := GetMinByI(data)
+	fmt.Println("---The original array is---")
+	for _, v := range data {
+		fmt.Printf("%d\t", v)
+	}
+	fmt.Printf("\nThe minimum is %d\n", min)
+}
+
+func TestIsMajority(t *testing.T) {
+	a := []int{0, 5, 5, 3, 5, 7, 5, 5}
+	b := []int{0, 5, 5, 3, 5, 1, 5, 7}
+
+	ok1 := IsMajority(a)
+	fmt.Println("---The original array is---")
+	for _, v := range a {
+		fmt.Printf("%d\t", v)
+	}
+	if ok1 != -1 {
+		fmt.Printf("\nThe majority of array exists and the value is 【%d】\n", ok1)
+	} else {
+		fmt.Printf("\nThe majority of array doesnot exists!\n")
+	}
+
+	ok2 := IsMajority(b)
+	fmt.Println("---The original array is---")
+	for _, v := range b {
+		fmt.Printf("%d\t", v)
+	}
+	if ok2 != -1 {
+		fmt.Printf("\nThe majority of array exists and the value is %d\n", ok2)
+	} else {
+		fmt.Printf("\nThe majority of array doesnot exists!\n")
+	}
+}
