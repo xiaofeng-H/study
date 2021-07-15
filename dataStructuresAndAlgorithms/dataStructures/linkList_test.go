@@ -14,7 +14,7 @@ func TestInitLinkListR(t *testing.T) {
 		if p == nil {
 			break
 		}
-		fmt.Println("LNode.data=", p.Data)
+		fmt.Println("LNode.Data=", p.Data)
 		p = p.Next
 	}
 }
@@ -28,7 +28,7 @@ func TestInitLinkListF(t *testing.T) {
 		if p == nil {
 			break
 		}
-		fmt.Println("LNode.data=", p.Data)
+		fmt.Println("LNode.Data=", p.Data)
 		p = p.Next
 	}
 }
@@ -43,7 +43,7 @@ func TestFindAndDelete(t *testing.T) {
 		if p == nil {
 			break
 		}
-		fmt.Println("LNode.data=", p.Data)
+		fmt.Println("LNode.Data=", p.Data)
 		p = p.Next
 	}
 	// 删除元素
@@ -55,7 +55,7 @@ func TestFindAndDelete(t *testing.T) {
 			if q == nil {
 				break
 			}
-			fmt.Println("LNode.data=", q.Data)
+			fmt.Println("LNode.Data=", q.Data)
 			q = q.Next
 		}
 	} else {
@@ -77,7 +77,7 @@ func TestMerge(t *testing.T) {
 		if p == nil {
 			break
 		}
-		fmt.Println("LNode.data=", p.Data)
+		fmt.Println("LNode.Data=", p.Data)
 		p = p.Next
 	}
 }
