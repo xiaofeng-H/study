@@ -4,7 +4,7 @@ import "fmt"
 
 // 顺序队定义
 type SequentialQueue struct {
-	Data  []interface{}
+	Data  [MaxSize]interface{}
 	Front int
 	Rear  int
 }
@@ -24,12 +24,12 @@ func (qu *SequentialQueue) isEmptySqQu() bool {
 
 // 进队
 func (qu *SequentialQueue) enSqQueue(data interface{}) bool {
-	if (qu.Rear+1)%len(qu.Data) == qu.Front {
+	if (qu.Rear+1)%MaxSize == qu.Front {
 		fmt.Println("The queue is full and cannot push any element into it")
 		return false
 	}
 
-	qu.Rear = (qu.Rear + 1) % len(qu.Data)
+	qu.Rear = (qu.Rear + 1) % MaxSize
 	qu.Data[qu.Rear] = data
 	return true
 }
@@ -41,7 +41,7 @@ func (qu *SequentialQueue) deSqQueue() (bool, interface{}) {
 		return false, nil
 	}
 
-	qu.Front = (qu.Front + 1) % len(qu.Data)
+	qu.Front = (qu.Front + 1) % MaxSize
 	return true, qu.Data[qu.Front]
 }
 
