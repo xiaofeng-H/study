@@ -1,6 +1,7 @@
 .idea/.gitignore
-.idea/friend.iml
+.idea/study.iml
 .idea/misc.xml
+.idea/workspace.xml
 .idea/modules.xml
 .idea/vcs.xml
 main.exe
