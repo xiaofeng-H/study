@@ -1,4 +1,4 @@
-package Algorithms
+package algorithms
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 
 // 共享栈结构体
 type ShareStack struct {
-	Data       [MaxSize]interface{}
+	Data       [MAXSIZE]interface{}
 	FrontIndex int // 共享栈头的栈顶
 	RearIndex  int // 共享栈底的栈顶
 }
@@ -47,7 +47,7 @@ func (ss *ShareStack) PullSS(isFront bool) (bool, interface{}) {
 			return false, nil
 		}
 	} else {
-		if ss.RearIndex == MaxSize {
+		if ss.RearIndex == MAXSIZE {
 			fmt.Println("The share stack is empty and cannot get any element!")
 			return false, nil
 		}
@@ -85,13 +85,13 @@ func (qs *QueueByDoubleStack) IsEmptyQS() bool {
 // 进队
 func (qs *QueueByDoubleStack) InsertQS(data interface{}) bool {
 	// 如果入栈已满但出栈不为空，则不能进队
-	if qs.insStack.Top == MaxSize-1 && !qs.delStack.IsEmptySq() {
+	if qs.insStack.Top == MAXSIZE-1 && !qs.delStack.IsEmptySq() {
 		fmt.Println("The insert stack is full but the delete stack is not empty! Cannot entry queue!")
 		return false
 	}
 
 	// 入栈未满则进队
-	if qs.insStack.Top < MaxSize {
+	if qs.insStack.Top < MAXSIZE {
 		/*qs.insStack.Top++
 		qs.insStack.Data[qs.insStack.Top] = data*/
 
@@ -99,14 +99,14 @@ func (qs *QueueByDoubleStack) InsertQS(data interface{}) bool {
 		qs.insStack.PushSq(data)
 	}
 	// 入栈已满但出栈为空则进队
-	if qs.insStack.Top == MaxSize-1 && qs.delStack.IsEmptySq() {
+	if qs.insStack.Top == MAXSIZE-1 && qs.delStack.IsEmptySq() {
 		/*// 转移元素
 		for i := 0; i <= qs.insStack.Top; i++ {
 			qs.delStack.Data[i] = qs.insStack.Data[i]
 		}
 		// 重置栈顶指针
 		qs.insStack.Top = 0
-		qs.delStack.Top = MaxSize - 1
+		qs.delStack.Top = MAXSIZE - 1
 
 		// 入队
 		qs.insStack.Data[qs.insStack.Top] = data*/
@@ -181,7 +181,7 @@ func (qs *QueueByDoubleStack) DeleteQS() (bool, interface{}) {
 
 // 队列结构体定义
 type QueueByTag struct {
-	data  [MaxSize]interface{}
+	data  [MAXSIZE]interface{}
 	front int
 	rear  int
 	tag   byte // 0：空 | 1：非空
@@ -211,7 +211,7 @@ func (qt *QueueByTag) enQT(data interface{}) bool {
 		return false
 	}
 
-	qt.rear = (qt.rear + 1) % MaxSize
+	qt.rear = (qt.rear + 1) % MAXSIZE
 	qt.data[qt.rear] = data
 	// 每次入队都重置tag值
 	qt.tag = 1
@@ -225,7 +225,7 @@ func (qt *QueueByTag) DelQT() (bool, interface{}) {
 		return false, nil
 	}
 
-	qt.front = (qt.front + 1) % MaxSize
+	qt.front = (qt.front + 1) % MAXSIZE
 	data := qt.data[qt.front]
 	/*
 		// 删除元素后如果队列空，则修改tag值

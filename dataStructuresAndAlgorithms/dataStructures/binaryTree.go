@@ -80,7 +80,7 @@ func PreOrderRec(bt *BTNode) {
 	if bt == nil {
 		return
 	}
-	visit(bt.data)
+	visitBT(bt.data)
 	PreOrderRec(bt.lChild)
 	PreOrderRec(bt.rChild)
 }
@@ -104,7 +104,7 @@ func PreOrderNoRec(bt *BTNode) {
 		// 3.栈顶元素出栈，结点右孩子先入栈，然后左孩子再入栈，依次循环
 		element = stack[top]
 		top--
-		visit(element.data)
+		visitBT(element.data)
 		if element.rChild != nil {
 			top++
 			stack[top] = element.rChild
@@ -122,7 +122,7 @@ func InOrderRec(bt *BTNode) {
 		return
 	}
 	InOrderRec(bt.lChild)
-	visit(bt.data)
+	visitBT(bt.data)
 	InOrderRec(bt.rChild)
 }
 
@@ -152,7 +152,7 @@ func InOrderNoRec(bt *BTNode) {
 		if top != -1 {
 			element = stack[top]
 			top--
-			visit(element.data)
+			visitBT(element.data)
 			// 被操作元素指向自己的右孩子
 			element = element.rChild
 		}
@@ -166,7 +166,7 @@ func PostOrderRec(bt *BTNode) {
 	}
 	PostOrderRec(bt.lChild)
 	PostOrderRec(bt.rChild)
-	visit(bt.data)
+	visitBT(bt.data)
 }
 
 // 二叉树后根遍历（非递归）
@@ -211,7 +211,7 @@ func PostOrderNoRec(bt *BTNode) {
 	for top2 != -1 {
 		element = stack2[top2]
 		top2--
-		visit(element.data)
+		visitBT(element.data)
 	}
 }
 
@@ -237,7 +237,7 @@ func LevelTraverse(bt *BTNode) {
 			front = (front + 1) % MaxSize
 			q := que[front]
 			// 访问对头结点，此处只简单打印
-			visit(q.data)
+			visitBT(q.data)
 			// 如果左子树不空，则左子树的根结点入队
 			if q.lChild != nil {
 				// 此处假设队列容量大于结点个数，不做队列满判断，下同
@@ -345,13 +345,13 @@ func InOrderByInOrderThreadTree(root *TBTNode) {
 	CreateInThread(root)
 	// 进行中序遍历
 	for p := GetFirstNode(root); p != nil; p = GetNextNode(p) {
-		visit(p.data)
+		visitBT(p.data)
 	}
 }
 
 /* 中序线索二叉树---end--- */
 
 // 操作遍历元素（此处只做简单打印）
-func visit(data interface{}) {
+func visitBT(data interface{}) {
 	fmt.Printf("%v, ", data)
 }

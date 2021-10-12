@@ -1,7 +1,8 @@
-package Algorithms
+package main
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
 	"study/dataStructuresAndAlgorithms/dataStructures"
 	"testing"
 )
@@ -15,7 +16,7 @@ func TestReSort(t *testing.T) {
 		fmt.Printf("index=%d\t value=%d\n", k, v)
 	}
 	// 重排序
-	if ok := ReSort(A, m, n); ok {
+	if ok := algorithms.ReSort(A, m, n); ok {
 		fmt.Println("---After resort---")
 		for k, v := range A {
 			fmt.Printf("index=%d\t value=%d\n", k, v)
@@ -37,7 +38,7 @@ func TestSubLinkList(t *testing.T) {
 
 	// 链表求差集
 	fmt.Println("---After sub---")
-	if ok := SubLinkList(&A, &B); ok {
+	if ok := algorithms.SubLinkList(&A, &B); ok {
 		A.PrintLinkList()
 	}
 }
@@ -48,7 +49,7 @@ func TestArrayReverse(t *testing.T) {
 		fmt.Printf("%d\t", v)
 	}
 	fmt.Println()
-	ArrayReverse(a)
+	algorithms.ArrayReverse(a)
 	fmt.Println("---After reverse---")
 	for _, v := range a {
 		fmt.Printf("%d\t", v)
@@ -62,7 +63,7 @@ func TestLinkListReverse(t *testing.T) {
 	ln.CreateListR(data)
 	fmt.Println("---Before LinkList Reverse---")
 	ln.PrintLinkList()
-	LinkListReverse(&ln)
+	algorithms.LinkListReverse(&ln)
 	fmt.Println("---After LinkList Reverse")
 	ln.PrintLinkList()
 }
@@ -73,7 +74,7 @@ func TestOnceQuickSort(t *testing.T) {
 		fmt.Printf("%d\t", v)
 	}
 	fmt.Println()
-	OnceQuickSort(a)
+	algorithms.OnceQuickSort(a)
 	fmt.Println("---After once quick sort---")
 	for _, v := range a {
 		fmt.Printf("%d\t", v)
@@ -83,7 +84,7 @@ func TestOnceQuickSort(t *testing.T) {
 
 func TestGetMinByI(t *testing.T) {
 	var data = []int{8, 7, 3, 4, 5, 6, 9}
-	min := GetMinByI(data)
+	min := algorithms.GetMinByI(data)
 	fmt.Println("---The original array is---")
 	for _, v := range data {
 		fmt.Printf("%d\t", v)
@@ -95,7 +96,7 @@ func TestIsMajority(t *testing.T) {
 	a := []int{0, 5, 5, 3, 5, 7, 5, 5}
 	b := []int{0, 5, 5, 3, 5, 1, 5, 7}
 
-	ok1 := IsMajority(a)
+	ok1 := algorithms.IsMajority(a)
 	fmt.Println("---The original array is---")
 	for _, v := range a {
 		fmt.Printf("%d\t", v)
@@ -106,7 +107,7 @@ func TestIsMajority(t *testing.T) {
 		fmt.Printf("\nThe majority of array doesnot exists!\n")
 	}
 
-	ok2 := IsMajority(b)
+	ok2 := algorithms.IsMajority(b)
 	fmt.Println("---The original array is---")
 	for _, v := range b {
 		fmt.Printf("%d\t", v)
