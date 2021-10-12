@@ -256,6 +256,101 @@ func LevelTraverse(bt *BTNode) {
 
 /* 二叉树遍历---end--- */
 
+// 线索二叉树结点
+type TBTNode struct {
+	data interface{}
+	// 标识域：0--指向结点孩子 | 1--线索
+	lTag   byte
+	rTag   byte
+	lChild *TBTNode
+	rChild *TBTNode
+}
+
+/* 中序线索二叉树---start--- */
+// 二叉树初始化
+func InitThreadBinaryTree(i int, arr []int) *TBTNode {
+	if arr[i] == 0 {
+		return nil
+	}
+	t := &TBTNode{arr[i], 0, 0, nil, nil}
+	if i < len(arr) && 2*i+1 < len(arr) {
+		t.lChild = InitThreadBinaryTree(2*i+1, arr)
+	}
+	if i < len(arr) && 2*i+2 < len(arr) {
+		t.rChild = InitThreadBinaryTree(2*i+2, arr)
+	}
+	return t
+}
+
+// 二叉树线索化（递归算法）
+func InThreadRec(p *TBTNode, pre *TBTNode) {
+	if p != nil {
+		// 递归，左子树线索化
+		InThreadRec(p.lChild, pre)
+		// 建立当前结点的前驱线索
+		if p.lChild == nil {
+			// 前驱线索化
+			p.lTag = 1
+			p.lChild = pre
+		}
+		// 建立前驱结点的后继线索
+		if pre != nil && pre.rChild == nil {
+			pre.rTag = 1
+			pre.rChild = p
+		}
+		// pre指向当前的node，作为node将要指向的下一个结点的前驱结点指示指针
+		pre = p
+		// node指向下一个新结点，此时pre和node分别指向的结点形成了一个前驱后继对，为下一次线索的连接做准备
+		p = p.rChild
+		// 递归，右子树线索化
+		InThreadRec(p, pre)
+	}
+}
+
+// 建立中序线索二叉树
+func CreateInThread(root *TBTNode) {
+	if root == nil {
+		fmt.Println("The BinaryTree is empty and cannot thread!")
+		return
+	}
+
+	var pre *TBTNode = nil
+	InThreadRec(root, pre)
+	fmt.Println(pre)
+	//pre.rTag = 1
+	//pre.rChild = nil
+}
+
+// 求以p为根的中序线索二叉树中，中序序列下的第一个结点
+func GetFirstNode(p *TBTNode) *TBTNode {
+	for p.lTag == 0 {
+		p = p.lChild
+	}
+	return p
+}
+
+// 求在中序线索二叉树中，结点p在中序下的后继结点
+func GetNextNode(p *TBTNode) *TBTNode {
+	if p.rTag == 0 {
+		return GetFirstNode(p.rChild)
+	} else {
+		// rTag == 1,直接返回后继线索
+		return p.rChild
+	}
+}
+
+// 以中序线索二叉树为存储结构的中序遍历
+func InOrderByInOrderThreadTree(root *TBTNode) {
+	// 建立中序二叉线索树
+	CreateInThread(root)
+	// 进行中序遍历
+	for p := GetFirstNode(root); p != nil; p = GetNextNode(p) {
+		visit(p.data)
+	}
+}
+
+/* 中序线索二叉树---end--- */
+
 // 操作遍历元素（此处只做简单打印）
 func visit(data interface{}) {
 	fmt.Printf("%v, ", data)

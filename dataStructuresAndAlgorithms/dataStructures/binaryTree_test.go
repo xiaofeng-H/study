@@ -33,3 +33,11 @@ func TestBinaryTree(t *testing.T) {
 	LevelTraverse(bt)
 	fmt.Println()
 }
+
+func TestInOrderByInOrderThreadTree(t *testing.T) {
+	var arr = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	bt := InitThreadBinaryTree(0, arr) // 顺序结构转为链式结构
+	fmt.Println("---通过中序线索二叉树进行中序遍历---")
+	InOrderByInOrderThreadTree(bt)
+	fmt.Println()
+}
