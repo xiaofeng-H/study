@@ -28,6 +28,7 @@ type ArcNode struct {
 // 表头结点
 type VNode struct {
 	Data     string   // 顶点信息
+	Count    int32    // 顶点当前的入度（拓扑排序）
 	FirstArc *ArcNode // 指向第一条边的指针
 }
 

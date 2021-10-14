@@ -216,6 +216,10 @@ func Floyd(g *ds.MGraph) ([][]int32, [][]int32) {
 }
 
 // 拓扑排序
+/*
+1.数据结构：邻接表
+2.时间复杂度：O(n+e)
+*/
 func TopSort(g *ds.AGraph) int32 {
 	// 定义并初始化栈
 	var stack [MAXSIZE]int32
