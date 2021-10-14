@@ -211,6 +211,51 @@ func Floyd(g *ds.MGraph) ([][]int32, [][]int32) {
 		}
 	}
 
-	// 返回最短路径及路径
+	// 3.返回最短路径及路径
 	return arr, path
+}
+
+// 拓扑排序
+func TopSort(g *ds.AGraph) int32 {
+	// 定义并初始化栈
+	var stack [MAXSIZE]int32
+	var top = int32(-1)
+	// 计数器：记录当前已经被排序的顶点个数
+	var num = int32(0)
+
+	// 1.将图中入度为0的顶点入栈
+	for i := int32(0); i < g.N; i++ {
+		if g.AdjList[i].Count == 0 {
+			top++
+			stack[top] = i
+		}
+	}
+	// 2.关键操作
+	for top != -1 {
+		// 顶点出栈
+		v := stack[top]
+		top--
+		// 计数器+1，统计当前顶点
+		num++
+		// 输出当前顶点
+		fmt.Printf("%d, ", v)
+		// 该循环将所有由此顶点引出的边所指向的顶点的入度都-1，并将这个过程中入度变为0的顶点入栈
+		p := g.AdjList[num].FirstArc // p指向被排序顶点的第一条边
+		k := p.AdjVex                // 该边连接的另一个顶点
+		for p != nil {
+			g.AdjList[k].Count--
+			if g.AdjList[k].Count == 0 {
+				top++
+				stack[top] = k
+			}
+			// p指向该顶点连接的下一条边
+			p = p.NextArc
+		}
+	}
+	// 3.判断该有向图是否可以进行拓扑排序
+	if num == g.N {
+		return 1
+	} else {
+		return 0
+	}
 }
