@@ -7,7 +7,7 @@ import (
 
 /*
 算法描述：数组A总共有m+n个元素，前m个元素递增有序，后n个元素也递增有序
-算法要求：设计一个算法，是的整个顺序表有序
+算法要求：设计一个算法，使得整个顺序表有序
 算法规模：时间复杂度：O(mn); 空间复杂度：O(1)
 */
 func ReSort(A []int, m, n int) bool {
@@ -71,11 +71,7 @@ func SubLinkList(A, B *dataStructures.LNode) bool {
 	// 解法二：别人的，时间复杂度：O(m+n)
 	p := A
 	q := B.Next
-	for {
-		if p.Next == nil || q == nil {
-			break
-		}
-
+	for p.Next != nil && q != nil {
 		if p.Next.Data < q.Data {
 			p = p.Next
 		} else if p.Next.Data > q.Data {
@@ -121,6 +117,8 @@ func LinkListReverse(ln *dataStructures.LNode) {
 	var q *dataStructures.LNode // 头插法建表时使用的中间变量
 	for p != nil {
 		// 思考良久，如不借助第三个指针变量，无法完成头插法构建单链表操作，看了参考解法亦然（2021/7/14 16:53）
+		// 你思考个锤子哦，人家只是说不让你新建结点，又没说不让你使用其他变量，真是咸吃萝卜淡操心！
+		// （别装了，你只是不清楚结点和变量到底是啥，傻X）(2021/11/14 13:45 )
 		q = p.Next
 		p.Next = ln.Next
 		ln.Next = p
@@ -181,6 +179,19 @@ func GetMinByI(A []int) int {
 	}
 
 	return i % 10
+}
+
+// 解法二
+func GetMinByI2(A []int) int {
+	N := len(A)
+	i := A[0] * 10
+	for i%10 < N {
+		if i/10 > A[i%10] {
+			i = A[i%10]*10 + i%10
+		}
+		i++
+	}
+	return i / 10
 }
 
 /*

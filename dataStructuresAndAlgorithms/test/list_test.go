@@ -83,13 +83,15 @@ func TestOnceQuickSort(t *testing.T) {
 }
 
 func TestGetMinByI(t *testing.T) {
-	var data = []int{8, 7, 3, 4, 5, 6, 9}
+	var data = []int{8, 7, 1, 4, 5, 6, 2}
 	min := algorithms.GetMinByI(data)
+	min2 := algorithms.GetMinByI2(data)
 	fmt.Println("---The original array is---")
 	for _, v := range data {
 		fmt.Printf("%d\t", v)
 	}
-	fmt.Printf("\nThe minimum is %d\n", min)
+	fmt.Printf("\nThe minimum is %d by function1\n", min)
+	fmt.Printf("The minimum is %d by function2\n", min2)
 }
 
 func TestIsMajority(t *testing.T) {
@@ -117,4 +119,10 @@ func TestIsMajority(t *testing.T) {
 	} else {
 		fmt.Printf("\nThe majority of array doesnot exists!\n")
 	}
+}
+
+func Test(t *testing.T) {
+	i := 55
+	i = (i%10)*10 + i%10
+	fmt.Println(i)
 }
