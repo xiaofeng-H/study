@@ -39,22 +39,63 @@ type AGraph struct {
 	E       int32          // 边数
 }
 
-/* 一下两种遍历都是连通图的遍历，若图是非连通的，只需循环调用这两种遍历即可 */
+/* 以下两种遍历都是连通图的遍历，若图是非连通的，只需循环调用这两种遍历即可 */
 // 以邻接表作为存储结构的图的深度优先搜索遍历（DFS）的递归算法
-var visitDFS [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
-func DFS(G *AGraph, v int32) {
+var visitDFSRec [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
+func DFSRec(G *AGraph, v int32) {
 	// 1.标记当前顶点状态为已访问
-	visitDFS[v] = 1
+	visitDFSRec[v] = 1
 	visitGraph(v)
 	// 2.若当前顶点v所指向的第一条边不为空，则以这一条边所指向的顶点为起始点进行DFS
 	p := G.AdjList[v].FirstArc // p指向顶点v的第一条边
 	for p != nil {
 		// 3.当且仅当该顶点尚未访问时才递归进行DFS
-		if visitDFS[p.AdjVex] == 0 {
-			DFS(G, p.AdjVex)
+		if visitDFSRec[p.AdjVex] == 0 {
+			DFSRec(G, p.AdjVex)
 		}
 		// 4.与当前顶点相连的每一条边都要进行DFS
 		p = p.NextArc // p指向与顶点v的下一条边
+	}
+}
+
+// 以邻接表作为存储结构的图的深度优先搜索遍历（DFS）的非递归算法
+var visitDFSNoRec [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
+func DFSNoRec(G *AGraph, v0 int32) {
+	// 辅助栈，记录访问过程中的顶点
+	var st [MaxSize]int32
+	var top = int(-1)
+	var v int32 // 当前访问顶点
+
+	// 初始化数据
+	for i := int32(0); i < G.N; i++ {
+		visitDFSNoRec[i] = 0
+	}
+
+	// 1.当前顶点入栈并访问
+	visitGraph(v)        // 访问顶点操作
+	visitDFSNoRec[v] = 1 // 标记已经访问过的顶点
+	top++
+	st[top] = v0
+
+	// 2.栈不空的时候进行遍历
+	for top != -1 {
+		// 3.栈顶顶点出栈并且让其尚未访问的到的某一个连接的顶点入栈
+		v = st[top]                // 取栈顶元素
+		p := G.AdjList[v].FirstArc // p指向该顶点的第一条边
+		/* 下面这个循环是p沿着边行走并将图中经过的顶点入栈的过程 */
+		// 找到当前顶点第一个没有访问过的邻接顶点或者p走到当前链表尾部时，循环停止
+		for p != nil && visitDFSNoRec[p.AdjVex] == 1 {
+			p = p.NextArc
+		}
+		// 如果p到达链表尾部，则说明当前顶点的所有点都访问完毕，当前顶点出栈；否则访问当前顶点并入栈
+		if p == nil {
+			top--
+		} else {
+			visitGraph(v)
+			visitDFSNoRec[v] = 1
+			top++
+			st[top] = p.AdjVex
+		}
 	}
 }
 
