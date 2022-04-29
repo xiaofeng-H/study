@@ -18,5 +18,13 @@ func TestStringToArray(t *testing.T) {
 		fmt.Println(k, ":", string(v))
 	}
 	fmt.Println(str[1:3])
-	fmt.Printf("%T\n",str[0])
+	fmt.Printf("%T\n", str[0])
+}
+
+func TestStringToNum(t *testing.T) {
+	str := "12345"
+	fmt.Println(str[0], str[1])
+	arr := []byte(str)
+	fmt.Printf("%d--%d\n", arr[1], arr[1]+1)
+	fmt.Printf("%s--%s\n", string(arr[1]), string(arr[1]+1))
 }

@@ -2,6 +2,7 @@ package algorithms
 
 import (
 	"math"
+	"strconv"
 	"strings"
 )
 
@@ -9,7 +10,7 @@ import (
 「力扣」第 53 题（最大子序和）
 */
 // 动态规划
-func MaxSubArray(nums []int) int {
+func MaxSubArray53(nums []int) int {
 	// 数组长度
 	len := len(nums)
 	// 定义状态： dp[i] 表示以i结尾的连续子序列的最大和
@@ -40,7 +41,7 @@ func MaxSubArray(nums []int) int {
 /*
 「力扣」第 70 题（爬楼梯）
 */
-func ClimbStairs(n int) int {
+func ClimbStairs70(n int) int {
 	var f1, f2 = 1, 2
 	var res int
 	if n == 1 {
@@ -60,7 +61,7 @@ func ClimbStairs(n int) int {
 /*
 「力扣」第 118 题（杨辉三角1）
 */
-func Generate(numRows int) [][]int {
+func Generate118(numRows int) [][]int {
 	var res = make([][]int, numRows, numRows)
 	res[0] = []int{1}
 	if numRows >= 2 {
@@ -82,7 +83,7 @@ func Generate(numRows int) [][]int {
 /*
 「力扣」第 119 题（杨辉三角2）
 */
-func GetRow(rowIndex int) []int {
+func GetRow119(rowIndex int) []int {
 	var pre, cur []int
 	for i := 0; i <= rowIndex; i++ {
 		cur = make([]int, i+1)
@@ -98,7 +99,7 @@ func GetRow(rowIndex int) []int {
 /*
 「力扣」第 2148 题（元素计数）
 */
-func CountElements(nums []int) int {
+func CountElements2148(nums []int) int {
 	// 满足同时具有严格较小值和严格较大值元素的数目
 	var num int
 	// 元素最小值
@@ -147,7 +148,7 @@ func CountElements(nums []int) int {
 "A" 运算：使 x = 2 * x + y
 "B" 运算：使 y = 2 * y + x
 */
-func Calculate(s string) int {
+func Calculate17(s string) int {
 	x := 1
 	y := 0
 	for _, e := range s {
@@ -172,7 +173,7 @@ func operationB(x, y int) int {
 /*
 「力扣」第 796 题（旋转字符串）
 */
-func RotateString(s string, goal string) bool {
+func RotateString796(s string, goal string) bool {
 	if len(s) != len(goal) {
 		return false
 	}
@@ -183,7 +184,7 @@ func RotateString(s string, goal string) bool {
 /*
 「力扣」第 1108 题（IP地址无效化）
 */
-func DefangIPaddr(address string) string {
+func DefangIPaddr1108(address string) string {
 	split := strings.Split(address, ".")
 	var res string
 	for k, e := range split {
@@ -219,7 +220,7 @@ right = 0  ，把索引左闭右开区间  [left, right)  称为⼀个「窗⼝�
 字符了）。同时，每次增加  left  ，我们都要更新⼀轮结果。
 4、重复第 2 和第 3 步，直到  right  到达字符串  S  的尽头。
 */
-func MinWindow(s string, t string) string {
+func MinWindow76(s string, t string) string {
 	// 首先，初始化window和need两个哈希表，记录窗口中的字符和需要凑齐的字符
 	var need, window map[byte]int
 	need = make(map[byte]int)
@@ -286,7 +287,7 @@ func MinWindow(s string, t string) string {
 链接：https://leetcode-cn.com/problems/permutation-in-string
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
-func CheckInclusion(s1 string, s2 string) bool {
+func CheckInclusion567(s1 string, s2 string) bool {
 	// 初始化数据
 	need := make(map[byte]int)
 	window := make(map[byte]int)
@@ -336,7 +337,7 @@ func CheckInclusion(s1 string, s2 string) bool {
 链接：https://leetcode-cn.com/problems/find-all-anagrams-in-a-string
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
-func FindAnagrams(s string, p string) []int {
+func FindAnagrams438(s string, p string) []int {
 	// 初始化数据
 	window := make(map[byte]int)
 	need := make(map[byte]int)
@@ -383,7 +384,7 @@ func FindAnagrams(s string, p string) []int {
 「力扣」第 3 题（无重复字符的最长子串）
 给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
 */
-func LengthOfLongestSubstring(s string) int {
+func LengthOfLongestSubstring3(s string) int {
 	// 空串处理
 	if s == "" {
 		return 0
@@ -430,7 +431,7 @@ func LengthOfLongestSubstring(s string) int {
 链接：https://leetcode-cn.com/problems/two-sum
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
-func twoSum(nums []int, target int) []int {
+func TwoSum1(nums []int, target int) []int {
 	// 解法一：之前牛客的题解，使用的是哈希表的思想(不要求原始数组有序)
 	var res []int = make([]int, 2, 2)
 	// 辅助哈希表
@@ -473,13 +474,238 @@ func twoSum(nums []int, target int) []int {
 	*/
 }
 
+/*======================================BFS start============================================*/
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 111 题（二叉树的最小深度）
 */
+// 二叉树结构体
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// BFS算法
+func MinDepth111(root *TreeNode) int {
+	// 空树处理
+	if root == nil {
+		return 0
+	}
+	// 变量初始化
+	var queue []*TreeNode = make([]*TreeNode, 0)
+	var front, rear = -1, -1 // 队列的首尾下标
+	var depth int = 1        // root本身就是一层，depth初始化为1
+	// BFS核心代码
+	// 根结点入队
+	rear++
+	queue = append(queue, root)
+	for rear != front {
+		length := rear - front
+		// 将当前队列中的所有结点向四周扩散（一层结点出队）
+		for i := 0; i < length; i++ {
+			// 队头结点出队
+			front++
+			cur := queue[front]
+			// 判断是否到达终点
+			if cur.Left == nil && cur.Right == nil {
+				return depth
+			}
+			// 将cur的相邻结点加入队列
+			if cur.Left != nil {
+				rear++
+				queue = append(queue, cur.Left)
+			}
+			if cur.Right != nil {
+				rear++
+				queue = append(queue, cur.Right)
+			}
+		}
+		// 这里增加步数
+		depth++
+	}
+	return depth
+}
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 752 题（打开转盘锁）
+你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' 。每个拨轮可以自由旋转：例如把 '9' 变为 '0'，'0' 变为 '9' 。每次旋转都只能旋转一个拨轮的一位数字。
+锁的初始数字为 '0000' ，一个代表四个拨轮的数字的字符串。
+列表 deadends 包含了一组死亡数字，一旦拨轮的数字和列表里的任何一个元素相同，这个锁将会被永久锁定，无法再被旋转。
+字符串 target 代表可以解锁的数字，你需要给出解锁需要的最小旋转次数，如果无论如何不能解锁，返回 -1 。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/open-the-lock
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
+// 将s[j]向上拨动一次
+func plusOne(s string, j int) string {
+	ch := []byte(s)
+	if ch[j] == '9' {
+		ch[j] = '0'
+	} else {
+		ch[j]++
+	}
+	return string(ch)
+}
+
+// 将s[i]向下拨动一次
+func minusOne(s string, i int) string {
+	ch := []byte(s)
+	if ch[i] == '0' {
+		ch[i] = '9'
+	} else {
+		ch[i]--
+	}
+	return string(ch)
+}
+
+// BFS框架，打印出所有可能的密码
+// 该法内存溢出，队列处理欠佳
+func OpenLock752(deadends []string, target string) int {
+	// 记录需要跳过的死亡密码
+	dead := make(map[string]int)
+	for k, v := range deadends {
+		dead[v] = k
+	}
+	// 记录已经穷举过的密码，防止走回头路
+	visited := make(map[string]int)
+	// 初始化数据
+	q := make([]string, 0)
+	front, rear := -1, -1
+	// 从起点开始启动广度优先搜索
+	step := 0
+	// 初始密码入队并记录
+	rear++
+	q = append(q, "0000")
+	visited["0000"] = 1
+
+	for front != rear {
+		length := rear - front
+		// 将当前队列中的所有结点向周围扩散
+		for i := 0; i < length; i++ {
+			// 队头结点出队
+			front++
+			cur := q[front]
+			// 判断是否到达终点
+			if _, ok := dead[cur]; ok {
+				continue
+			}
+			if cur == target {
+				return step
+			}
+			// 将一个结点的未遍历相邻结点加入队列
+			for j := 0; j < 4; j++ {
+				up := plusOne(cur, j)
+				if _, ok := visited[up]; !ok {
+					rear++
+					q = append(q, up)
+				}
+				down := minusOne(cur, j)
+				if _, ok := visited[down]; !ok {
+					rear++
+					q = append(q, down)
+				}
+			}
+		}
+		// 在这里增加步数
+		step++
+	}
+	// 如果穷举完都没有找到目标密码，那就是找不到了
+	return -1
+}
+
+func openLock(deadends []string, target string) int {
+	step := 0 // 旋转次数
+	deadendsMap := make(map[string]bool)
+	visitedMap := make(map[string]bool)
+
+	for _, v := range deadends { // 记录所有“死亡点”
+		deadendsMap[v] = true
+	}
+
+	q := []string{"0000"} // 队列q
+	for len(q) > 0 {      // 循环直至队列为空
+		size := len(q)              // 获取BFS当前level的节点个数
+		for i := 0; i < size; i++ { // 遍历当前层的节点
+			node := q[0]        // 获取出列的节点
+			q = q[1:]           // 节点出列
+			if node == target { // 如果出列的节点正好是目标节点
+				return step // 返回当前所用的步数
+			}
+			if _, ok := visitedMap[node]; ok { // 之前访问过该节点，跳过
+				continue
+			}
+			if _, ok := deadendsMap[node]; ok { // 遇到“死亡点”，跳过
+				continue
+			}
+			visitedMap[node] = true // 将该点标记为访问过
+
+			for j := 0; j < len(node); j++ { // 通过遍历当前字符串，找出它的所有子节点，安排入列
+				num := int(node[j] - '0')                             // 获取当前的数字num
+				up := (num + 1) % 10                                  // 往上拧所得的新数，比如1变成2
+				down := (num + 9) % 10                                // 往下拧所得的新数，比如7变成6
+				q = append(q, node[:j]+strconv.Itoa(up)+node[j+1:])   // 拼成新字符串，入列
+				q = append(q, node[:j]+strconv.Itoa(down)+node[j+1:]) // 拼成新字符串 入列
+			}
+		}
+		step++ // 当前层的所有节点遍历完毕，层次+1
+	}
+	return -1 // 无论如何都遇不到目标节点，返回-1
+}
+
+// 双向BFS
+func OpenLockBothway752(deadends []string, target string) int {
+	// 数据初始化
+	dead := make(map[string]bool)
+	for _, v := range deadends {
+		dead[v] = true
+	}
+	// 用集合不用队列，可以快速判断元素是否存在
+	q1 := make(map[string]bool)
+	q2 := make(map[string]bool)
+	visited := make(map[string]bool)
+	step := 0
+	q1["0000"] = true
+	q2[target] = true
+
+	for len(q1) != 0 && len(q2) != 0 {
+		// 哈希表在遍历的过程中不能修改，用tmp存储扩散结果
+		tmp := make(map[string]bool)
+
+		// 将q1中的所有结点向四周扩散
+		for k := range q1 {
+			// 判断是否到达终点
+			if _, ok := dead[k]; ok {
+				continue
+			}
+			if _, ok := q2[k]; ok {
+				return step
+			}
+			visited[k] = true
+
+			// 将一个结点的未遍历相邻结点加入集合
+			for j := 0; j < 4; j++ {
+				up := plusOne(k, j)
+				if _, ok := visited[up]; !ok {
+					tmp[up] = true
+				}
+				down := minusOne(k, j)
+				if _, ok := visited[down]; !ok {
+					tmp[down] = true
+				}
+			}
+		}
+		/* 在这⾥增加步数 */
+		step++
+		// temp 相当于 q1
+		// 这⾥交换 q1 q2，下⼀轮 while 就是扩散 q2
+		q1 = q2
+		q2 = tmp
+	}
+	return -1
+}
+
+/*======================================BFS end============================================*/
 
 /*
 「力扣」第 2148 题（元素计数）
