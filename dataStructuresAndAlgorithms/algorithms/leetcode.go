@@ -707,6 +707,71 @@ func OpenLockBothway752(deadends []string, target string) int {
 
 /*======================================BFS end============================================*/
 
+/*======================================递归 start============================================*/
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+// 递归初识
+// 给他⼀个节点和⼀个⽬标值，他返回以这个节点为根的树 中，和为⽬标值的路径总数
+func pathSum437(root *TreeNode, targetSum int) int {
+	// 递归结束条件
+	if root == nil {
+		return 0
+	}
+
+	// 自己为开头的路径数
+	pathImLeading := count(root, targetSum)
+	// 左边路径总数（相信他能算出来）
+	leftPathSum := pathSum437(root.Left, targetSum)
+	// 右边路径总数（相信他也能算出来）
+	rightPathSum := pathSum437(root.Right, targetSum)
+
+	return pathImLeading + leftPathSum + rightPathSum
+
+}
+
+// 给他⼀个节点和⼀个⽬标值，他返回以这个节点为根的树中， 能凑出⼏个以该节点为路径开头，和为⽬标值的路径总数
+func count(node *TreeNode, sum int) int {
+	// 递归结束条件
+	if node == nil {
+		return 0
+	}
+
+	// 我自己能不能独当一面，作为一条单独的路径呢？
+	var isMe int
+	if node.Val == sum {
+		isMe = 1
+	} else {
+		isMe = 0
+	}
+	// 左边的小老弟，你那边能凑出几个 sum - node.Val 呀？
+	leftBrother := count(node.Left, sum-node.Val)
+	// 右边的小老弟，你那边能凑出几个 sum - node.Val 呀？
+	rightBrother := count(node.Right, sum-node.Val)
+
+	// 我这能凑这么多个
+	return isMe + leftBrother + rightBrother
+}
+
+/*
+数组中的逆序对（剑指51）
+算法名称：分治
+算法思想：二路归并排序
+时间复杂度：O(N*logN)
+*/
+func reversePairs(nums []int) int {
+return 0
+}
+/*======================================递归 end============================================*/
+
+/*======================================分治 start============================================*/
+/*======================================分治 end============================================*/
+
 /*
 「力扣」第 2148 题（元素计数）
 */
