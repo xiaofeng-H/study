@@ -3,6 +3,7 @@ package algorithms
 import (
 	"fmt"
 	"math"
+	"study/dataStructuresAndAlgorithms/dataStructures"
 )
 
 /*
@@ -298,7 +299,7 @@ O(N)。使用快慢指针可优化空间复杂度，详解看代码。
 时间复杂度：O(N)
 空间复杂度：O(1)
 */
-func isPalindrome(head *ListNode) bool {
+func isPalindrome234(head *ListNode) bool {
 	// 1.先通过双指针技巧中的快慢指针来找到链表的中点；
 	slow, fast := head, head
 	for fast != nil && fast.Next != nil {
@@ -712,7 +713,7 @@ func solve(board [][]byte) {
 
 	m, n := len(board), len(board[0])
 	// 给dummy留一个额外的位置
-	uf := NewUF(m*n + 1)
+	uf := dataStructures.NewUF(m*n + 1)
 	dummy := m * n
 	// 将首列和末列的0与dummy连通
 	for i := 0; i < m; i++ {
@@ -766,7 +767,7 @@ func solve(board [][]byte) {
 */
 func equationsPossible990(equations []string) bool {
 	// 26 个英文字母
-	uf := NewUF(26)
+	uf := dataStructures.NewUF(26)
 	// 先让相等的字母形成连通分量
 	for _, v := range equations {
 		if v[1] == '=' {

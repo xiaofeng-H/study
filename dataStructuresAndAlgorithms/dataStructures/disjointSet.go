@@ -1,4 +1,4 @@
-package algorithms
+package dataStructures
 
 /*======================================Union-Find 算法 start============================================*/
 /*

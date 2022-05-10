@@ -1062,12 +1062,58 @@ func lengthOfLastWord58(s string) int {
 }
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 125 题（验证回文串）
 */
+func isPalindrome125(s string) bool {
+	// 空串默认为回文串
+	if len(s) == 0 {
+		return true
+	}
+
+	// 先将原始串统一转换为小写
+	str := strings.ToLower(s)
+	// 采用双指针进行回文串判定
+	left, right := 0, len(str)-1
+	for left < right {
+		// 先检查双指针是否指向字母或者数字
+		for left < right && !isNumsOrWords(str[left]) {
+			left++
+		}
+		for left < right && !isNumsOrWords(str[right]) {
+			right--
+		}
+		// 判断是否是回文串
+		if left < right {
+			if str[left] != str[right] {
+				return false
+			}
+			left++
+			right--
+		}
+	}
+	return true
+}
+
+// 判断一个字符是否属于数字或者字母
+func isNumsOrWords(c byte) bool {
+	return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
+}
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 141 题（环形链表）
 */
+func hasCycle141(head *ListNode) bool {
+	// 快慢指针
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+		if slow == fast {
+			return true
+		}
+	}
+	return false
+}
 
 /*
 「力扣」第 2148 题（元素计数）
