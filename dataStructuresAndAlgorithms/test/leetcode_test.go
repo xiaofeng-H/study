@@ -24,3 +24,9 @@ func TestLeetCode752(t *testing.T) {
 	step := algorithms.OpenLock752(deadends, target)
 	fmt.Println(step)
 }
+
+func TestLeetCode46(t *testing.T) {
+	arr := []int{1, 2, 3, 4}
+	permute46 := algorithms.Permute46(arr)
+	fmt.Println(permute46)
+}

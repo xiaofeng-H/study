@@ -896,7 +896,7 @@ func mergeTwoLists21(list1 *ListNode, list2 *ListNode) *ListNode {
 	return head.Next
 }
 
-/*======================================二叉树遍历（非递归） start============================================*/
+/*======================================二叉树 start============================================*/
 /**
  * Definition for a binary tree node.
  * type TreeNode struct {
@@ -1018,7 +1018,186 @@ func postorderTraversal145(root *TreeNode) []int {
 	return res
 }
 
-/*======================================二叉树遍历（非递归） end============================================*/
+/*
+「力扣」第 102 题（二叉树层次遍历）
+*/
+func levelOrder102(root *TreeNode) [][]int {
+	// 边界值处理
+	if root == nil {
+		return nil
+	}
+
+	// 辅助变量初始化
+	queue := make([]*TreeNode, 0) // 辅助队列
+	res := make([][]int, 0)       // 遍历结果
+
+	// 根结点入队
+	queue = append(queue, root)
+	// 队不空时进行层次遍历
+	for len(queue) > 0 {
+		// 同一层的结点出队
+		arr := make([]int, 0)
+		length := len(queue)
+		for i := 0; i < length; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			arr = append(arr, node.Val)
+			// 该结点的左右孩子入队
+			if node.Left != nil {
+				queue = append(queue, node.Left)
+			}
+			if node.Right != nil {
+				queue = append(queue, node.Right)
+			}
+		}
+		res = append(res, arr)
+	}
+	return res
+}
+
+/*
+「力扣」第 98 题（验证二叉搜索树）
+*/
+func isValidBST98(root *TreeNode) bool {
+	return isValidBSTPlus(root, nil, nil)
+}
+
+func isValidBSTPlus(root, min, max *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	if min != nil && root.Val <= min.Val {
+		return false
+	}
+	if max != nil && root.Val >= max.Val {
+		return false
+	}
+	return isValidBSTPlus(root.Left, min, root) && isValidBSTPlus(root.Right, root, max)
+}
+
+/*
+「力扣」第 100 题（相同的树）
+*/
+func isSameTree100(p *TreeNode, q *TreeNode) bool {
+	// 边界值处理（注意以下两个if条件的并列使用）
+	// 都为空的话，显然相同
+	if p == nil && q == nil {
+		return true
+	}
+	// 一个为空，一个非空，显然不同
+	if p == nil || q == nil {
+		return false
+	}
+	// 两个都非空，但val不一样也不行
+	if p.Val != q.Val {
+		return false
+	}
+	// p和q该比的都比完了
+	return isSameTree100(p.Left, q.Left) && isSameTree100(p.Right, q.Right)
+}
+
+/*
+「力扣」第 700 题（二叉搜索树中的搜索）
+*/
+func searchBST700(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val == val {
+		return root
+	}
+
+	// 剪枝（二叉搜索树性质）
+	if root.Val < val {
+		return searchBST700(root.Right, val)
+	}
+	return searchBST700(root.Left, val)
+	// root该做的事做完了，顺带把框架也完成了，妙
+}
+
+/*
+「力扣」第 701 题（二叉搜索树中的插入操作）
+*/
+func insertIntoBST701(root *TreeNode, val int) *TreeNode {
+	// 找到空位置插入新结点
+	if root == nil {
+		return &TreeNode{
+			Val:   val,
+			Left:  nil,
+			Right: nil,
+		}
+	}
+	// if root.Val == val // BST中一般不会插入已存在的元素
+	// 二叉搜索树的剪枝操作
+	if root.Val < val {
+		root.Right = insertIntoBST701(root.Right, val)
+	}
+	if root.Val > val {
+		root.Left = insertIntoBST701(root.Left, val)
+	}
+	return root
+}
+
+/*
+「力扣」第 450 题（二叉搜索树中的删除操作）
+*/
+func deleteNode(root *TreeNode, key int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val == key {
+		// 这两个if把情况1和2都正确处理了（这逻辑，牛逼）2022/5/12 21:53
+		if root.Left == nil {
+			return root.Right
+		}
+		if root.Right == nil {
+			return root.Left
+		}
+		// 处理情况3
+		minNode := getMin(root.Right)
+		root.Val = minNode.Val
+		root.Right = deleteNode(root.Right, minNode.Val)
+	} else if root.Val > key {
+		root.Left = deleteNode(root.Left, key)
+	} else if root.Val < key {
+		root.Right = deleteNode(root.Right, key)
+	}
+	return root
+}
+
+func getMin(node *TreeNode) *TreeNode {
+	// BST最左边的就是最小值
+	for node.Left != nil {
+		node = node.Left
+	}
+	return node
+}
+
+/*
+「力扣」第 222 题（完全二叉树的结点个数）
+时间复杂度：O(logN*logN)
+*/
+func countNodes222(root *TreeNode) int {
+	l, r := root, root
+	// 记录左右子树的高度
+	hl, hr := 0, 0
+	for l != nil {
+		l = l.Left
+		hl++
+	}
+	for r != nil {
+		r = r.Right
+		hr++
+	}
+	// 如果左右子树的高度相同，则是一颗满二叉树
+	if hl == hr {
+		return int(math.Pow(2, float64(hl)) - 1)
+	}
+	// 如果左右高度不同，则按照普通二叉树的逻辑计算
+	return 1 + countNodes222(root.Left) + countNodes222(root.Right)
+}
+
+/*======================================二叉树 end============================================*/
 
 /*
 「力扣」第 27 题（移除元素）
@@ -1115,29 +1294,181 @@ func hasCycle141(head *ListNode) bool {
 	return false
 }
 
+/*======================================动态规划 start============================================*/
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 322 题（零钱兑换）
 */
+func coinChange322(coins []int, amount int) int {
+	// dp[i] = x  表⽰，当⽬标⾦额为  i  时，⾄少需要  x  枚硬币
+	// 数组大小为amount+1，初始值也为amount+1
+	dp := make([]int, amount+1)
+	for k := range dp {
+		dp[k] = amount + 1
+	}
+
+	// base case
+	dp[0] = 0
+	for i := 0; i < len(dp); i++ {
+		// 内层for循环在求所有子问题+1的最小值
+		for _, v := range coins {
+			// 子问题无解，跳过
+			if i-v < 0 {
+				continue
+			}
+			dp[i] = minInt(dp[i], 1+dp[i-v])
+		}
+	}
+	if dp[amount] == amount+1 {
+		return -1
+	} else {
+		return dp[amount]
+	}
+}
+
+/*======================================动态规划 end============================================*/
+
+/*======================================回溯 start============================================*/
+/*
+「力扣」第 46 题（全排列）
+*/
+var resPermute [][]int
+
+func Permute46(nums []int) [][]int {
+	resPermute = make([][]int, 0)
+	// 记录路径
+	track := make([]int, 0)
+	backTrackPermute(nums, track)
+	return resPermute
+}
+
+// 路径：记录在track中
+// 选择列表：nums中不存在与track的那些元素
+// 结束条件：nums中的元素全都在track中出现
+func backTrackPermute(nums, track []int) {
+	// 触发结束条件
+	if len(track) == len(nums) {
+		fmt.Printf("满足条件的全排列为：%v\n", track)
+		fmt.Printf("添加前的结果集为：%v\n", resPermute)
+		// 注意：切片本身为引用类型，修改值会修改底层数组，导致添加到结果集中的数据也发生改变，使得结果集会有重复结果，
+		// 实际是因为修改切片值引起的，从而引发bug(找了好半天)！需要新开辟空间，以永久存储结果。（2022/5/12 23:42）
+		arr := make([]int, len(track))
+		for k := range track {
+			arr[k] = track[k]
+		}
+		resPermute = append(resPermute, arr)
+		fmt.Printf("添加后的结果集为：%v\n", resPermute)
+		return
+	}
+
+	for i := 0; i < len(nums); i++ {
+		// 排除不合法的选择
+		if containsInt(track, nums[i]) {
+			continue
+		}
+		// 做选择
+		track = append(track, nums[i])
+		fmt.Printf("选择后的路径为：%v,新增的选择为：%v\n", track, nums[i])
+		// 进入下一层决策树
+		backTrackPermute(nums, track)
+		// 撤销选择
+		length := len(track)
+		track = track[:length-1]
+		fmt.Printf("撤销选择后的路径为：%v,撤销的选择为：%v\n", track, nums[i])
+	}
+}
+
+// 判断切片中是否存在target
+func containsInt(arr []int, target int) bool {
+	for k := range arr {
+		if arr[k] == target {
+			return true
+		}
+	}
+	return false
+}
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 51 题（N皇后）
 */
+var resNQueens [][]string // 储存结果
+// 输入棋盘边长 n，返回所有合法的位置
+func solveNQueens(n int) [][]string {
+	// 经典回溯算法
+	// 初始化
+	resNQueens = make([][]string, 0)
+	// '.' 表示空，'Q' 表示皇后，初始化空棋盘
+	board := make([][]byte, n) // 棋盘初始化
+	for i := 0; i < n; i++ {
+		board[i] = make([]byte, n)
+		for j := 0; j < n; j++ {
+			board[i][j] = '.'
+		}
+	}
+	backTrackNQueens(board, 0)
+	return resNQueens
+}
 
-/*
-「力扣」第 2148 题（元素计数）
-*/
+// 路径：board中小于row的那些行都已经成功放置了皇后
+// 选择列表：第row行的所有列都是放置皇后的选择
+// 结束条件：row超过board的最后一行
+func backTrackNQueens(board [][]byte, row int) {
+	// 结束条件
+	if row == len(board) {
+		// 记录棋盘分布并保存结果
+		str := make([]string, 0)
+		for _, v := range board {
+			s := string(v)
+			str = append(str, s)
+		}
+		resNQueens = append(resNQueens, str)
+		return
+	}
 
-/*
-「力扣」第 2148 题（元素计数）
-*/
+	for col := 0; col < len(board); col++ {
+		// 排除不合法选择
+		if !isValidLeetCode(board, row, col) {
+			continue
+		}
+		// 做出选择
+		board[row][col] = 'Q'
+		// 进入下一行决策
+		backTrackNQueens(board, row+1)
+		// 撤销选择
+		board[row][col] = '.'
+	}
+}
 
-/*
-「力扣」第 2148 题（元素计数）
-*/
+// 判断当前位置是否可以继续放置皇后
+func isValidLeetCode(board [][]byte, row, col int) bool {
+	// 先看当前列是否已经放置皇后
+	for i := 0; i < row; i++ {
+		if board[i][col] == 'Q' {
+			return false
+		}
+	}
+	// 再看左上方是否已经放置皇后
+	for i, j := row-1, col-1; i >= 0 && j >= 0; {
+		if board[i][j] == 'Q' {
+			return false
+		}
+		i--
+		j--
+	}
+	// 再看右上方是否已经放置皇后
+	for i, j := row-1, col+1; i >= 0 && j < len(board); {
+		if board[i][j] == 'Q' {
+			return false
+		}
+		i--
+		j++
+	}
+	return true
+}
+/*======================================回溯 end============================================*/
 
-/*
-「力扣」第 2148 题（元素计数）
-*/
+/*======================================分治 start============================================*/
+/*======================================分治 end============================================*/
+
 /*
 「力扣」第 2148 题（元素计数）
 */

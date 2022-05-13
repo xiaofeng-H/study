@@ -1,13 +1,11 @@
 package test
 
 import (
-	"fmt"
-	"study/dataStructuresAndAlgorithms/algorithms"
 	"testing"
 )
 
 func TestDisjointSet(t *testing.T) {
-	var edges = [][2]int{
+	/*var edges = [][2]int{
 		{0, 1}, {1, 2}, {1, 3}, {2, 5}, {3, 4},
 	}
 	var n = len(edges)	// 顶点个数
@@ -23,5 +21,5 @@ func TestDisjointSet(t *testing.T) {
 	fmt.Println("No cycle found!")
 	for k, v := range parents {
 		fmt.Printf("index=%d value=%d, ", k, v)
-	}
+	}*/
 }
