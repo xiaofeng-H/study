@@ -20,15 +20,22 @@ func Opt(a int, b int, opt rune) int {
 	}
 }
 
-// 求两个数的最大值
-func GetTheMax(a int, b int) int {
-	// 注意：GO语言抛弃了三元运算符，以下写法是错误的
-	//return a > b ? a : b
+// 注意：GO语言抛弃了三元运算符，以下写法是错误的
+//return a > b ? a : b
+// 求两个数（int）的较大者
+func maxInt(a, b int) int {
 	if a > b {
 		return a
-	} else if a < b {
-		return b
 	} else {
+		return b
+	}
+}
+
+// 求两个数（int）的较小者
+func minInt(a, b int) int {
+	if a < b {
 		return a
+	} else {
+		return b
 	}
 }

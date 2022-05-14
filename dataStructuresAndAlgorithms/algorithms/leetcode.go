@@ -309,90 +309,6 @@ func countNodes222(root *TreeNode) int {
 
 /*======================================二叉树 end============================================*/
 
-/*======================================动态规划 start============================================*/
-/*
-「力扣」第 53 题（最大子序和）
-*/
-func MaxSubArray53(nums []int) int {
-	// 数组长度
-	len := len(nums)
-	// 定义状态： dp[i] 表示以i结尾的连续子序列的最大和
-	var dp = make([]int, len, len)
-	// 所求最大和
-	var res int
-	// 初始化状态
-	dp[0] = nums[0]
-
-	for i := 1; i < len; i++ {
-		if dp[i-1] < 0 {
-			dp[i] = nums[i]
-		} else {
-			dp[i] = dp[i-1] + nums[i]
-		}
-	}
-
-	res = dp[0]
-	for _, v := range dp {
-		if res < v {
-			res = v
-		}
-	}
-
-	return res
-}
-
-/*
-「力扣」第 70 题（爬楼梯）
-*/
-func ClimbStairs70(n int) int {
-	var f1, f2 = 1, 2
-	var res int
-	if n == 1 {
-		return 1
-	} else if n == 2 {
-		return 2
-	}
-
-	for i := 3; i <= n; i++ {
-		res = f1 + f2
-		f1 = f2
-		f2 = res
-	}
-	return res
-}
-
-/*
-「力扣」第 322 题（零钱兑换）
-*/
-func coinChange322(coins []int, amount int) int {
-	// dp[i] = x  表⽰，当⽬标⾦额为  i  时，⾄少需要  x  枚硬币
-	// 数组大小为amount+1，初始值也为amount+1
-	dp := make([]int, amount+1)
-	for k := range dp {
-		dp[k] = amount + 1
-	}
-
-	// base case
-	dp[0] = 0
-	for i := 0; i < len(dp); i++ {
-		// 内层for循环在求所有子问题+1的最小值
-		for _, v := range coins {
-			// 子问题无解，跳过
-			if i-v < 0 {
-				continue
-			}
-			dp[i] = minInt(dp[i], 1+dp[i-v])
-		}
-	}
-	if dp[amount] == amount+1 {
-		return -1
-	} else {
-		return dp[amount]
-	}
-}
-
-/*======================================动态规划 end============================================*/
-
 /*======================================分治 start============================================*/
 /*
 「力扣」第 2148 题（元素计数）
@@ -1482,6 +1398,23 @@ func hasCycle141(head *ListNode) bool {
 }
 
 /*======================================分治 start============================================*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*//*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*//*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*//*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
 /*======================================分治 end============================================*/
 
 /*

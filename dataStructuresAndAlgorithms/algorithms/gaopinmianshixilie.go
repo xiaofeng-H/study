@@ -184,24 +184,6 @@ func shipWithinDays1011(weights []int, days int) int {
 时间复杂度：O(N)
 空间复杂度：O(N)
 */
-// 求两个数（int）的较大者
-func maxInt(a, b int) int {
-	if a > b {
-		return a
-	} else {
-		return b
-	}
-}
-
-// 求两个数（int）的较小者
-func minInt(a, b int) int {
-	if a < b {
-		return a
-	} else {
-		return b
-	}
-}
-
 // 备忘录版本
 func trapRemember42(height []int) int {
 	if len(height) == 0 {
