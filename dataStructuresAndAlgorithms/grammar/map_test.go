@@ -15,4 +15,6 @@ func TestMap1(t *testing.T) {
 	//m[2]=10
 	//fmt.Println(m[2])
 
+	m = make(map[int]int)
+
 }

@@ -110,6 +110,7 @@ func Conversion() {
  * 要求：空间复杂度 O(1)O(1) ，时间复杂度 O(n!)O(n!)
  */
 var nQueensRes [][]string
+
 // 输入棋盘边长 n，返回所有合法的位置
 func SolveNQueens(n int) [][]string {
 	// '.' 表示空，'Q' 表示皇后，初始化空棋盘
@@ -184,4 +185,52 @@ func isValid(board [][]rune, row int, col int) bool {
 		l--
 	}
 	return true
+}
+
+
+func threeOrders(root *TreeNode) [][]int {
+	var res [][]int
+	var resPre, resIn, resPost []int
+	// write code here
+	res = make([][]int, 0, 3)
+	resPre = make([]int, 0)
+	resIn = make([]int, 0)
+	resPost = make([]int, 0)
+
+	preOrder(root, &resPre)
+	inOrder(root, &resIn)
+	postOrder(root, &resPost)
+
+	res = append(res, resPre)
+	res = append(res, resIn)
+	res = append(res, resPost)
+
+	return res
+}
+
+func preOrder(root *TreeNode, res *[]int) {
+	if root == nil {
+		return
+	}
+	*res = append(*res, root.Val)
+	preOrder(root.Left, res)
+	preOrder(root.Right, res)
+}
+
+func inOrder(root *TreeNode, res *[]int) {
+	if root == nil {
+		return
+	}
+	inOrder(root.Left, res)
+	*res = append(*res, root.Val)
+	inOrder(root.Right, res)
+}
+
+func postOrder(root *TreeNode, res *[]int) {
+	if root == nil {
+		return
+	}
+	postOrder(root.Left, res)
+	postOrder(root.Right, res)
+	*res = append(*res, root.Val)
 }
