@@ -45,3 +45,14 @@ func change2(arr *[]int) {
 	*arr = append(*arr, 2)
 	*arr = append(*arr, 3)
 }
+
+func Test3(t *testing.T) {
+	var slice = []int{1, 2, 3, 4, 5, 6, 7, 8}
+	index := 6
+	sl := append(slice[7:7],slice[1:]...)
+	fmt.Println(sl)
+	fmt.Println(len(sl))
+	slice = append(slice[:index], slice[index+1:]...)
+	fmt.Println(slice)
+	fmt.Println(len(slice))
+}

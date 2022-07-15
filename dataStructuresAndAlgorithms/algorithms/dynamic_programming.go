@@ -54,79 +54,6 @@ func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 }
 
 /*
-「力扣」第 416 题（分割等和子集问题）
-时间复杂度：O(N*SUM/2)
-空间复杂带：O(N*SUM/2)
-*/
-// 输⼊⼀个集合，返回是否能够分割成和相等的两个⼦集
-func canPartition416(nums []int) bool {
-	// 边界值处理
-	sum := 0
-	for k := range nums {
-		sum += nums[k]
-	}
-	// 和为奇数时，不可能分割成两个和相等的集合
-	if sum%2 != 0 {
-		return false
-	}
-	// 状态初始化
-	n := len(nums)
-	sum /= 2
-	dp := make([][]bool, n+1)
-	for i := 0; i <= n; i++ {
-		dp[i] = make([]bool, sum+1)
-		// base case
-		dp[i][0] = true
-	}
-	// 状态转移
-	for i := 1; i <= n; i++ {
-		for j := 1; j <= sum; j++ {
-			if (j - nums[i-1]) < 0 { // 背包容量不足，不能装入第i个物品
-				dp[i][j] = dp[i-1][j]
-			} else {
-				// 装入或者不装入背包
-				dp[i][j] = dp[i-1][j-nums[i-1]] || dp[i-1][j]
-			}
-		}
-	}
-	return dp[n][sum]
-}
-
-/*
-「力扣」第 416 题（分割等和子集问题--状态压缩）
-时间复杂度：O(N*SUM/2)
-空间复杂带：O(SUM)
-*/
-// 输⼊⼀个集合，返回是否能够分割成和相等的两个⼦集
-func canPartition(nums []int) bool {
-	// 边界值处理
-	sum := 0
-	for k := range nums {
-		sum += nums[k]
-	}
-	// 和为奇数时，不可能分割成两个和相等的集合
-	if sum%2 != 0 {
-		return false
-	}
-	// 状态初始化
-	n := len(nums)
-	sum /= 2
-	dp := make([]bool, sum+1)
-	// base case
-	dp[0] = true
-
-	// 状态转移
-	for i := 0; i < n; i++ {
-		for j := sum; j >= 0; j-- {
-			if (j - nums[i]) >= 0 {
-				dp[j] = dp[j-nums[i]] || dp[j]
-			}
-		}
-	}
-	return dp[sum]
-}
-
-/*
 	完全背包：没有限制时，一种商品可以无限买，直到背包容量装满
 	为什么完全背包和01背包很像？
  	因为01背包在当前商品可以购买时，实际是通过解决自己的i-1的子问题来解决01背包问题，dp[i-1][j - w[i - 1]]，
@@ -361,9 +288,13 @@ func coinChange322(coins []int, amount int) int {
 	我们借这个问题来由浅⼊深讲解如何写动态规划。⽐较难想到的是利⽤⼆分查找， 时间复杂度是 O(NlogN)，我们通过⼀种简单的纸牌游戏来辅助理解这种巧妙的解法。
 	注意：「⼦序列」和「⼦串」这两个名词的区别，⼦串⼀定是连续的，⽽⼦序列不⼀定是连续的。
 */
+/*
+卧槽，有次面试就问到了这个问题，不同的是还有求出具体的子序列，我他妈没有答出来（2022/6/28 20:18）
+*/
 func lengthOfLIS300(nums []int) int {
 	// 序列长度
 	n := len(nums)
+	// step1：定义状态
 	// 定义dp数组，dp[i] 表⽰以 nums[i] 这个数结尾的最⻓递增⼦序列的长度
 	dp := make([]int, n)
 	// 初始化为1
@@ -373,7 +304,7 @@ func lengthOfLIS300(nums []int) int {
 	// 结果初始化为0
 	res := 0
 
-	// 状态转移
+	// step2：状态转移
 	for i := 0; i < n; i++ {
 		for j := 0; j < i; j++ {
 			if nums[i] > nums[j] {
@@ -388,6 +319,79 @@ func lengthOfLIS300(nums []int) int {
 		}
 	}
 	return res
+}
+
+/*
+「力扣」第 416 题（分割等和子集问题）
+时间复杂度：O(N*SUM/2)
+空间复杂带：O(N*SUM/2)
+*/
+// 输⼊⼀个集合，返回是否能够分割成和相等的两个⼦集
+func canPartition416(nums []int) bool {
+	// 边界值处理
+	sum := 0
+	for k := range nums {
+		sum += nums[k]
+	}
+	// 和为奇数时，不可能分割成两个和相等的集合
+	if sum%2 != 0 {
+		return false
+	}
+	// 状态初始化
+	n := len(nums)
+	sum /= 2
+	dp := make([][]bool, n+1)
+	for i := 0; i <= n; i++ {
+		dp[i] = make([]bool, sum+1)
+		// base case
+		dp[i][0] = true
+	}
+	// 状态转移
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= sum; j++ {
+			if (j - nums[i-1]) < 0 { // 背包容量不足，不能装入第i个物品
+				dp[i][j] = dp[i-1][j]
+			} else {
+				// 装入或者不装入背包
+				dp[i][j] = dp[i-1][j-nums[i-1]] || dp[i-1][j]
+			}
+		}
+	}
+	return dp[n][sum]
+}
+
+/*
+「力扣」第 416 题（分割等和子集问题--状态压缩）
+时间复杂度：O(N*SUM/2)
+空间复杂带：O(SUM)
+*/
+// 输⼊⼀个集合，返回是否能够分割成和相等的两个⼦集
+func canPartition(nums []int) bool {
+	// 边界值处理
+	sum := 0
+	for k := range nums {
+		sum += nums[k]
+	}
+	// 和为奇数时，不可能分割成两个和相等的集合
+	if sum%2 != 0 {
+		return false
+	}
+	// 状态初始化
+	n := len(nums)
+	sum /= 2
+	dp := make([]bool, sum+1)
+	// base case
+	dp[0] = true
+
+	// 状态转移
+	for i := 0; i < n; i++ {
+		for j := sum; j >= 0; j-- {
+			if (j - nums[i]) >= 0 {
+				dp[j] = dp[j-nums[i]] || dp[j]
+			}
+		}
+	}
+	return dp[sum]
 }
 
 /*======================================动态规划 end============================================*/

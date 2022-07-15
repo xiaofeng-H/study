@@ -1418,16 +1418,181 @@ func hasCycle141(head *ListNode) bool {
 /*======================================分治 end============================================*/
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 735 题（行星碰撞）
 */
+// 第一思路
+func asteroidCollision753(asteroids []int) []int {
+	var res []int = make([]int, 0)
+	length := len(asteroids)
+	i := 1
+	for {
+		// 只剩下一颗行星或者检查完时，无需碰撞
+		if length == 1 || i >= length {
+			break
+		}
+
+		// 从最左边开始截取向左飞行的行星，因为这些行星永远不会发生碰撞
+		if asteroids[0] < 0 {
+			res = append(res, asteroids[0])
+			asteroids = asteroids[1:]
+			length = len(asteroids)
+			continue
+		}
+
+		// 当前行星与前一位行星同方向，则继续后移
+		if asteroids[i-1]*asteroids[i] > 0 {
+			// 当坐标移动到最后一位时，碰撞结束
+			if i == length-1 {
+				break
+			}
+			i++
+		}
+
+		// 当前行星与前一位行星相向而行，则发生碰撞
+		if asteroids[i-1]*asteroids[i] < 0 {
+			pre := math.Abs(float64(asteroids[i-1]))
+			cur := math.Abs(float64(asteroids[i]))
+			if pre > cur {
+				// 如果前面的行星质量大，则发生碰撞且不移动下标
+				asteroids = append(asteroids[:i], asteroids[i+1:]...)
+			} else if pre < cur {
+				// 如果后面的行星质量大，则发生碰撞且下标向左移动一位
+				asteroids = append(asteroids[:i-1], asteroids[i:]...)
+				if i != 1 {
+					// 如果是前两位发生碰撞，则不移动下标
+					i--
+				}
+			} else {
+				// 两颗行星质量相同，则湮灭同时下标指向下一位（向左移动一位）
+				asteroids = append(asteroids[:i-1], asteroids[i+1:]...)
+				if i != 1 {
+					// 如果是前两位发生碰撞，则不移动下标
+					i--
+				}
+			}
+			// 发生碰撞后，更新长度
+			length = len(asteroids)
+		}
+	}
+	res = append(res, asteroids...)
+	return res
+}
+
+// 第二思路：利用栈回溯（当然，是看了官方解析之后才想到的）（2022/7/14 11:42）
+func asteroidCollision(asteroids []int) []int {
+	// 辅助栈
+	var st []int = make([]int, 0)
+
+	for _, cur := range asteroids {
+		// 标志当前行星是否还存活（未发生碰撞）
+		alive := true
+		/*碰撞检测条件：
+		1、栈不为空---存在发生碰撞的可能
+		2、栈顶元素大于零---大于零代表向右飞行，此时才会和向左飞行的行星碰撞
+		3、当前元素小于零---小于零代表向左飞行，此时才会和栈顶向右飞行的行星发生碰撞
+		4、当前行星必须是存活状态*/
+		for len(st) > 0 && st[len(st)-1] > 0 && cur < 0 && alive {
+			// 更新当前行星的状态
+			alive = st[len(st)-1] < -cur
+			if st[len(st)-1] <= -cur {
+				// 发生碰撞
+				st = st[:len(st)-1]
+			}
+		}
+		// 如果当前行星存活，则入栈
+		if alive {
+			st = append(st, cur)
+		}
+	}
+
+	return st
+}
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 1688 题（比赛中的匹配次数）
 */
+// 暴力求解
+func numberOfMatches1688(n int) int {
+	var res int = 0
+	for n > 1 {
+		if n%2 == 0 {
+			res += n / 2
+			n /= 2
+		} else {
+			res += (n + 1) / 2
+			n /= 2
+		}
+	}
+	return res
+}
 
 /*
-「力扣」第 2148 题（元素计数）
+「力扣」第 2 题（两数相加）
 */
+func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
+	var overFlow int   // 进位值
+	var head *ListNode // 结果链表表头
+	var tail *ListNode // 结果链表尾结点
+	p, q := l1, l2
+
+	for p != nil && q != nil {
+		// 初始化计算结果链表结点
+		tmp := new(ListNode)
+		tmp.Next = nil
+		// 当前计算结果
+		sum := p.Val + q.Val + overFlow
+		overFlow = sum / 10
+		sum = sum % 10
+		tmp.Val = sum
+
+		// 使用尾插法建立链表，以达到逆序排列
+		// 该链表没有头结点，故链表的第一个结点需要进行特殊处理
+		if head == nil {
+			head = tmp
+			tail = tmp
+		} else {
+			tail.Next = tmp
+			tail = tmp
+		}
+
+		p = p.Next
+		q = q.Next
+	}
+
+	// 处理未空的链表
+	for p != nil {
+		sum := p.Val + overFlow
+		overFlow = sum / 10
+		sum = sum % 10
+		p.Val = sum
+		tail.Next = p
+		tail = p
+		p = p.Next
+		if overFlow == 0 {
+			break
+		}
+	}
+	for q != nil {
+		sum := q.Val + overFlow
+		overFlow = sum / 10
+		sum = sum % 10
+		q.Val = sum
+		tail.Next = q
+		tail = q
+		q = q.Next
+		if overFlow == 0 {
+			break
+		}
+	}
+	// 处理最后结点产生进位情况
+	if overFlow != 0 {
+		tmp := ListNode{Val: overFlow, Next: nil}
+		tail.Next = &tmp
+	}
+
+	return head
+}
+
 /*
 「力扣」第 2148 题（元素计数）
 */
