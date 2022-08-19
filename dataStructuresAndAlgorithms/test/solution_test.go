@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/dataStructures"
 	"testing"
 )
 
@@ -38,4 +39,10 @@ func solution(arr []int) int {
 	}
 
 	return max
+}
+
+func TestMoveZeroElements(t *testing.T) {
+	var a []int = []int{0, 0, 0, 1, 0, 0, 2, 0, 3, 4, 0, 0, 5, 0,0,0,0,0,6,4,3,5,56,7,8}
+	dataStructures.MoveZeroElements(a)
+	fmt.Println(a)
 }
