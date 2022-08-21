@@ -38,7 +38,10 @@ func TestBinaryTree(t *testing.T) {
 func TestInOrderByInOrderThreadTree(t *testing.T) {
 	var arr = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	bt := dataStructures.InitThreadBinaryTree(0, arr) // 顺序结构转为链式结构
-	fmt.Println("---通过中序线索二叉树进行中序遍历---")
+	fmt.Println("---非递归中序遍历:")
+	dataStructures.InOrderThreadedBTNoRec(bt)
+	fmt.Println()
+	fmt.Println("---中序线索二叉树遍历:")
 	dataStructures.InOrderByInOrderThreadTree(bt)
 	fmt.Println()
 }
