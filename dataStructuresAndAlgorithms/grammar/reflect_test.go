@@ -62,3 +62,8 @@ func ReflectStructTest() {
 		fmt.Printf("第%d个方法是：%s:%v\n", i+1, m.Name, m.Type)
 	}
 }
+
+func TestReflect2(t *testing.T) {
+	var r = rune(32)
+	fmt.Println(reflect.TypeOf(r).Name()=="int8")
+}

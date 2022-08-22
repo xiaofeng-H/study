@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// 二叉树遍历
 func TestBinaryTree(t *testing.T) {
 	//var arr = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	//var arr1 = []int{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'}
@@ -35,6 +36,7 @@ func TestBinaryTree(t *testing.T) {
 	fmt.Println()
 }
 
+// 中序线索二叉树
 func TestInOrderByInOrderThreadTree(t *testing.T) {
 	var arr = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	bt := dataStructures.InitThreadBinaryTree(0, arr) // 顺序结构转为链式结构
@@ -44,4 +46,12 @@ func TestInOrderByInOrderThreadTree(t *testing.T) {
 	fmt.Println("---中序线索二叉树遍历:")
 	dataStructures.InOrderByInOrderThreadTree(bt)
 	fmt.Println()
+}
+
+// 前序中序创建二叉树
+func TestPreInInitBT(t *testing.T) {
+	var pre = []rune{'A', 'B', 'C', 'D', 'E', 'F'}
+	var in = []rune{'C', 'B', 'A', 'E', 'D', 'F'}
+	bt := dataStructures.PreInInitBT(pre, in, 0, len(pre)-1, 0, len(in)-1)
+	dataStructures.PostOrderNoRec(bt)
 }

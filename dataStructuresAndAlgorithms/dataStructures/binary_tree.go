@@ -2,6 +2,7 @@ package dataStructures
 
 import (
 	"fmt"
+	"reflect"
 )
 
 // 二叉树结点
@@ -20,7 +21,7 @@ func NewBTNode(data interface{}) BTNode {
 	}
 }
 
-/* 二叉树初始化---start--- */
+/* ============================二叉树初始化 start ============================ */
 // 1.由标明空子树的先根遍历序列建立一颗二叉树的操作算法
 var i = -1 // 结点数据段数组下标
 func PreOrderInitRec(arr []int) *BTNode {
@@ -54,7 +55,34 @@ func ArrayToLinkInitRec(i int, arr []int) *BTNode {
 	return t
 }
 
-// 由先根遍历序列和中根遍历序列建立一颗二叉树
+// 3.由先根遍历序列和中根遍历序列建立一颗二叉树
+func PreInInitBT(pre, in []rune, l1, r1, l2, r2 int) *BTNode {
+	if l1 > r1 {
+		return nil
+	}
+
+	// 核心步骤开始
+	node := BTNode{
+		data:   nil,
+		lChild: nil,
+		rChild: nil,
+	}
+	i := l2
+	for i <= r2 {
+		if in[i] == pre[l1] {
+			node.data = in[i]
+			break
+		}
+		i++
+	}
+	// 注意下标的修改（2022/8/21 23:19）
+	node.lChild = PreInInitBT(pre, in, l1+1, l1+i-l2, l2, i-1)
+	node.rChild = PreInInitBT(pre, in, l1+i-l2+1, r1, i+1, r2)
+
+	return &node
+}
+
+// 3.由先根遍历序列和中根遍历序列建立一颗二叉树
 func PreMidInitRec(pa []int, ma []int, preI int, midI int, len int) *BTNode {
 	if len > 0 {
 		p := pa[preI]
@@ -72,9 +100,9 @@ func PreMidInitRec(pa []int, ma []int, preI int, midI int, len int) *BTNode {
 	return nil
 }
 
-/* 二叉树初始化---end--- */
+/* ============================二叉树初始化 end ============================ */
 
-/* 二叉树遍历---start--- */
+/* ============================二叉树遍历 start ============================ */
 // 二叉树先根遍历（递归）
 func PreOrderRec(bt *BTNode) {
 	if bt == nil {
@@ -254,9 +282,13 @@ func LevelTraverse(bt *BTNode) {
 	}
 }
 
-/* 二叉树遍历---end--- */
+/* ============================二叉树遍历 end ============================ */
 
 // 操作遍历元素（此处只做简单打印）
 func visitBT(data interface{}) {
-	fmt.Printf("%v, ", data)
+	if reflect.TypeOf(data).Name() == "int32" {
+		fmt.Printf("%v, ", string(data.(rune)))
+	} else {
+		fmt.Printf("%v, ", data)
+	}
 }
