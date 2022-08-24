@@ -198,15 +198,15 @@ func trapRemember42(height []int) int {
 
 	// 从左向右计算lMax
 	for i := 1; i < n; i++ {
-		lMax[i] = maxInt(height[i], lMax[i-1])
+		lMax[i] = MaxIntAB(height[i], lMax[i-1])
 	}
 	// 从右向左计算rMax
 	for i := n - 2; i >= 0; i-- {
-		rMax[i] = maxInt(height[i], rMax[i+1])
+		rMax[i] = MaxIntAB(height[i], rMax[i+1])
 	}
 	// 计算答案
 	for i := 1; i < n-1; i++ {
-		ans += minInt(lMax[i], rMax[i]) - height[i]
+		ans += MinIntAB(lMax[i], rMax[i]) - height[i]
 	}
 	return ans
 }
@@ -232,8 +232,8 @@ func trapDoublePoint42(height []int) int {
 
 	// 开始求解
 	for left <= right {
-		lMax = maxInt(lMax, height[left])
-		rMax = maxInt(rMax, height[right])
+		lMax = MaxIntAB(lMax, height[left])
+		rMax = MaxIntAB(rMax, height[right])
 
 		if lMax < rMax {
 			ans += lMax - height[left]

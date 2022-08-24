@@ -55,3 +55,16 @@ func TestPreInInitBT(t *testing.T) {
 	bt := dataStructures.PreInInitBT(pre, in, 0, len(pre)-1, 0, len(in)-1)
 	dataStructures.PostOrderNoRec(bt)
 }
+
+func TestInitSpecialBT(t *testing.T) {
+	bt := dataStructures.InitBTByPreInOrder()
+	dataStructures.PostOrderNoRec(bt)
+}
+
+// 求二叉树值为x的结点所在的层号
+func TestGetLevelBTN(t *testing.T) {
+	// m=5,n=6
+	bt := dataStructures.InitBTByPreInOrder()
+	x := 'N'
+	dataStructures.GetLevelOfBTN(bt, x)
+}

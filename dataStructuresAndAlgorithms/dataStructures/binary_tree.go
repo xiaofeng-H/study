@@ -82,6 +82,38 @@ func PreInInitBT(pre, in []rune, l1, r1, l2, r2 int) *BTNode {
 	return &node
 }
 
+/*
+创建一颗用于测试的二叉树，其二叉树和遍历结果如下：
+									A
+									|
+								/		\
+							/				\
+						/						\
+					B								C
+				/									|
+			/									  /	  \
+		/									    /		\
+	/										  /			  \
+  D											E				F
+	\										|					\
+		\								  /	  \						\
+			G							J		K						L
+		/		\													/
+	H				I											M
+				  /	  \											  \
+				O		P											N
+						  \
+							Q
+先序：A,B,D,G,H,I,O,P,Q,C,E,J,K,F,L,M,N
+中序：D,H,G,O,I,P,Q,B,A,J,E,K,C,F,M,N,L
+后序：H,O,Q,P,I,G,D,B,J,K,E,N,M,L,F,C,A
+*/
+func InitBTByPreInOrder() *BTNode {
+	var pre []rune = []rune{'A', 'B', 'D', 'G', 'H', 'I', 'O', 'P', 'Q', 'C', 'E', 'J', 'K', 'F', 'L', 'M', 'N'}
+	var in []rune = []rune{'D', 'H', 'G', 'O', 'I', 'P', 'Q', 'B', 'A', 'J', 'E', 'K', 'C', 'F', 'M', 'N', 'L'}
+	return PreInInitBT(pre, in, 0, len(pre)-1, 0, len(in)-1)
+}
+
 // 3.由先根遍历序列和中根遍历序列建立一颗二叉树
 func PreMidInitRec(pa []int, ma []int, preI int, midI int, len int) *BTNode {
 	if len > 0 {
@@ -292,3 +324,23 @@ func visitBT(data interface{}) {
 		fmt.Printf("%v, ", data)
 	}
 }
+
+/* ============================二叉树相关算法 start ============================ */
+// 求二叉树值为x的结点所在的层号
+var Level uint32 = 0
+
+func GetLevelOfBTN(bt *BTNode, x rune) {
+	if bt == nil {
+		return
+	}
+	Level++
+	if bt.data == x {
+		fmt.Printf("%v所在的层次为：%d\n", string(x), Level)
+
+	}
+	GetLevelOfBTN(bt.lChild, x)
+	GetLevelOfBTN(bt.rChild, x)
+	Level--
+}
+
+/* ============================二叉树相关算法 end ============================ */

@@ -1,6 +1,9 @@
-package algorithms
+package sort
 
-import "fmt"
+import (
+	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
+)
 
 /**
  * @description：插入类排序算法的实现
@@ -41,7 +44,7 @@ func DirectInsertSort(a []int) {
 
 	// 打印结果
 	fmt.Println("直接插入排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 }
 
 /**
@@ -92,7 +95,7 @@ func HalfInsertSort(a []int) {
 
 	// 打印结果
 	fmt.Println("折半插入排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 }
 
 /**

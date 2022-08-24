@@ -46,7 +46,7 @@ func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 				dp[i][w] = dp[i-1][w]
 			} else {
 				// 装入或者不装入背包，择优
-				dp[i][w] = maxInt(dp[i-1][w], dp[i-1][w-wt[i-1]]+val[i-1])
+				dp[i][w] = MaxIntAB(dp[i-1][w], dp[i-1][w-wt[i-1]]+val[i-1])
 			}
 		}
 	}
@@ -192,7 +192,7 @@ func minDistance(word1 string, word2 string) int {
 	return dp[m][n]
 }
 func min(a, b, c int) int {
-	return minInt(a, minInt(b, c))
+	return MinIntAB(a, MinIntAB(b, c))
 }
 
 /*
@@ -268,7 +268,7 @@ func coinChange322(coins []int, amount int) int {
 			if i-v < 0 {
 				continue
 			}
-			dp[i] = minInt(dp[i], 1+dp[i-v])
+			dp[i] = MinIntAB(dp[i], 1+dp[i-v])
 		}
 	}
 	if dp[amount] == amount+1 {
@@ -308,7 +308,7 @@ func lengthOfLIS300(nums []int) int {
 	for i := 0; i < n; i++ {
 		for j := 0; j < i; j++ {
 			if nums[i] > nums[j] {
-				dp[i] = maxInt(dp[i], dp[j]+1)
+				dp[i] = MaxIntAB(dp[i], dp[j]+1)
 			}
 		}
 	}

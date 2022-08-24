@@ -1,7 +1,8 @@
-package algorithms
+package sort
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
 )
 
 /**
@@ -34,7 +35,7 @@ func MergeSort1(a []int, low int, high int) {
 	// 将前半段有序序列和后半段有序序列归并成整体有序序列
 	merge1(a, low, mid, high)
 	fmt.Println("二路归并排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 
 }
 
@@ -130,5 +131,5 @@ func merge2(nums, tmp []int, lo, mid, hi int) {
 	}
 
 	fmt.Println("二路归并排序后的结果为：")
-	PrintArray(nums)
+	algorithms.PrintArray(nums)
 }

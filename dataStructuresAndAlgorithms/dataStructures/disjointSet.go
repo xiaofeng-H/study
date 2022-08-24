@@ -8,7 +8,7 @@ package dataStructures
 3、在  find  函数中进⾏路径压缩，保证任意树的⾼度保持在常数，使得union  和  connected  API 时间复杂度为 O(1)。
 */
 // 并查集结构体
-type UF struct {
+type UnionFindSet struct {
 	// 记录连通分量
 	counts int
 	// 结点x的父结点是parent[x]
@@ -22,7 +22,7 @@ type UF struct {
 时间复杂度：O(N)
 空间复杂度：O(N)
 */
-func NewUF(n int) *UF {
+func NewUF(n int) *UnionFindSet {
 	// 数据初始化
 	tmp1, tmp2 := make([]int, n), make([]int, n)
 	for i := 0; i < n; i++ {
@@ -32,7 +32,7 @@ func NewUF(n int) *UF {
 		tmp2[i] = 1
 	}
 
-	return &UF{
+	return &UnionFindSet{
 		// 一开始互不连通
 		counts:  n,
 		parents: tmp1,
@@ -44,7 +44,7 @@ func NewUF(n int) *UF {
 将结点p、q连接使其连通
 时间复杂度：O(logN)/进行路径压缩后优化为O(1)
 */
-func (u *UF) Union(p, q int) {
+func (u *UnionFindSet) Union(p, q int) {
 	rootP := u.Find(p)
 	rootQ := u.Find(q)
 
@@ -75,7 +75,7 @@ func (u *UF) Union(p, q int) {
 时间复杂度：O(logN)/进行路径压缩后优化为O(1)
 路径压缩结果：可⻅，调⽤ find  函数每次向树根遍历的同时，顺⼿将树⾼缩短了，最终所有树⾼都不会超过 3（ union  的时候树⾼可能达到 3）。
 */
-func (u *UF) Find(x int) int {
+func (u *UnionFindSet) Find(x int) int {
 	// 根结点的parent[x] == x
 	for u.parents[x] != x {
 		// 优化操作：进行路径压缩，使得相关方法的时间复杂度优化为O(1)
@@ -86,7 +86,7 @@ func (u *UF) Find(x int) int {
 }
 
 // 返回当前的连通分量个数
-func (u *UF) Counts() int {
+func (u *UnionFindSet) Counts() int {
 	return u.counts
 }
 
@@ -94,10 +94,15 @@ func (u *UF) Counts() int {
 判断结点p、q是否连通
 时间复杂度：O(logN)/进行路径压缩后优化为O(1)
 */
-func (u *UF) Connected(p, q int) bool {
+func (u *UnionFindSet) Connected(p, q int) bool {
 	rootP := u.Find(p)
 	rootQ := u.Find(q)
 	return rootP == rootQ
+}
+
+// 返回并查集
+func (u *UnionFindSet) GetUnionFindSet() []int {
+	return u.parents
 }
 
 /*======================================Union-Find 算法 end============================================*/

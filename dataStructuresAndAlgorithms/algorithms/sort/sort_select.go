@@ -1,7 +1,8 @@
-package algorithms
+package sort
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
 )
 
 /**
@@ -40,7 +41,7 @@ func SimpleSelectSort(a []int) {
 	}
 
 	fmt.Println("简单选择排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 }
 
 /**
@@ -74,7 +75,7 @@ func HeapSort(a []int) {
 	}
 
 	fmt.Println("堆排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 }
 
 // 在数组a[low]到a[high]的范围内对在位置low上的结点进行调整

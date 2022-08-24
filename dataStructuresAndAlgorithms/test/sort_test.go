@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"study/dataStructuresAndAlgorithms/algorithms"
+	"study/dataStructuresAndAlgorithms/algorithms/sort"
 	"testing"
 )
 
@@ -21,7 +22,7 @@ func TestDirectInsertSort(t *testing.T) {
 	//var b = []int{9, 8, 4, 7, 6, 2, 5, 3, 1}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.DirectInsertSort(a)
+	sort.DirectInsertSort(a)
 }
 
 func TestHalfInsertSort(t *testing.T) {
@@ -29,7 +30,7 @@ func TestHalfInsertSort(t *testing.T) {
 	var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.HalfInsertSort(a)
+	sort.HalfInsertSort(a)
 }
 
 func TestBubbleSort(t *testing.T) {
@@ -37,7 +38,7 @@ func TestBubbleSort(t *testing.T) {
 	//var b = []int{9, 8, 4, 7, 6, 2, 5, 3, 1}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.BubbleSort(a)
+	sort.BubbleSort(a)
 }
 
 func TestQuickSort(t *testing.T) {
@@ -45,7 +46,7 @@ func TestQuickSort(t *testing.T) {
 	var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1, 23, 92, 87, -3, 77, -5}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.QuickSort(a, 0, len(a)-1)
+	sort.QuickSort(a, 0, len(a)-1)
 }
 
 func TestSimpleSelectSort(t *testing.T) {
@@ -53,7 +54,7 @@ func TestSimpleSelectSort(t *testing.T) {
 	//var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1,23,92,87,-3,77,-5}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.SimpleSelectSort(a)
+	sort.SimpleSelectSort(a)
 }
 
 func TestHeapSort(t *testing.T) {
@@ -61,7 +62,7 @@ func TestHeapSort(t *testing.T) {
 	//var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1,23,92,87,-3,77,-5}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.HeapSort(a)
+	sort.HeapSort(a)
 }
 
 func TestMergeSort1(t *testing.T) {
@@ -70,7 +71,7 @@ func TestMergeSort1(t *testing.T) {
 	//var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1,23,92,87,-3,77,-5}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(a)
-	algorithms.MergeSort1(a, 0, len(a)-1)
+	sort.MergeSort1(a, 0, len(a)-1)
 }
 
 func TestMergeSort2(t *testing.T) {
@@ -80,5 +81,5 @@ func TestMergeSort2(t *testing.T) {
 	//var a = []int{9, 8, 4, 7, 6, 2, 5, 3, 1,23,92,87,-3,77,-5}
 	fmt.Println("排序前的结果为：")
 	algorithms.PrintArray(nums)
-	algorithms.MergeSort2(nums, tmp, 0, len(nums)-1)
+	sort.MergeSort2(nums, tmp, 0, len(nums)-1)
 }

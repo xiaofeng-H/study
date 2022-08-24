@@ -1,7 +1,8 @@
-package algorithms
+package sort
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
 )
 
 /**
@@ -42,7 +43,7 @@ func BubbleSort(a []int) {
 	}
 
 	fmt.Println("冒泡排序后的结果为：")
-	PrintArray(a)
+	algorithms.PrintArray(a)
 }
 
 /**
@@ -95,13 +96,5 @@ func QuickSort(a []int, low int, high int) {
 
 	// 打印结果
 	fmt.Println("快速排序后的结果为：")
-	PrintArray(a)
-}
-
-//遍历数组且输出数值方法
-func PrintArray(a []int) {
-	for i := 0; i < len(a); i++ {
-		fmt.Printf("%d\t", a[i])
-	}
-	fmt.Println()
+	algorithms.PrintArray(a)
 }

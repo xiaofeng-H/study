@@ -11,10 +11,10 @@ type VertexType struct {
 
 // 使用邻接矩阵作为存储结构的图的数据结构
 type MGraph struct {
-	Edges [MaxSize][MaxSize]int32 // 邻接矩阵定义
-	N     int32                   // 顶点数
-	E     int32                   // 边数
-	Vex   [MaxSize]VertexType     // 存放顶点信息
+	Edges [][]int32    // 邻接矩阵定义
+	N     int32        // 顶点数
+	E     int32        // 边数
+	Vex   []VertexType // 存放顶点信息
 }
 
 /* 邻接表存储数据结构 */
@@ -34,16 +34,18 @@ type VNode struct {
 
 // 使用邻接表作为存储结构的图的数据结构
 type AGraph struct {
-	AdjList [MaxSize]VNode // 邻接表
-	N       int32          // 顶点数
-	E       int32          // 边数
+	AdjList []VNode // 邻接表
+	N       int32   // 顶点数
+	E       int32   // 边数
 }
 
+/* ============================树的遍历 start ============================ */
 /* 以下两种遍历都是连通图的遍历，若图是非连通的，只需循环调用这两种遍历即可 */
 // 以邻接表作为存储结构的图的深度优先搜索遍历（DFS）的递归算法
-var visitDFSRec [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
+var visitDFSRec []int32 // 顶点的访问标记（0：未访问；1：已访问）
 func DFSRec(G *AGraph, v int32) {
 	// 1.标记当前顶点状态为已访问
+	visitDFSRec = make([]int32, G.N)
 	visitDFSRec[v] = 1
 	visitGraph(v)
 	// 2.若当前顶点v所指向的第一条边不为空，则以这一条边所指向的顶点为起始点进行DFS
@@ -59,29 +61,26 @@ func DFSRec(G *AGraph, v int32) {
 }
 
 // 以邻接表作为存储结构的图的深度优先搜索遍历（DFS）的非递归算法
-var visitDFSNoRec [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
-func DFSNoRec(G *AGraph, v0 int32) {
+var visitDFSNoRec []int // 顶点的访问标记（0：未访问；1：已访问）
+func DFSNoRec(G *AGraph, v int) {
 	// 辅助栈，记录访问过程中的顶点
-	var st [MaxSize]int32
-	var top = int(-1)
-	var v int32 // 当前访问顶点
+	var st []int = make([]int, G.N)
+	var top = -1
 
 	// 初始化数据
-	for i := int32(0); i < G.N; i++ {
-		visitDFSNoRec[i] = 0
-	}
+	visitDFSNoRec = make([]int, G.N)
 
 	// 1.当前顶点入栈并访问
 	visitGraph(v)        // 访问顶点操作
 	visitDFSNoRec[v] = 1 // 标记已经访问过的顶点
 	top++
-	st[top] = v0
+	st[top] = v
 
 	// 2.栈不空的时候进行遍历
 	for top != -1 {
 		// 3.栈顶顶点出栈并且让其尚未访问的到的某一个连接的顶点入栈
-		v = st[top]                // 取栈顶元素
-		p := G.AdjList[v].FirstArc // p指向该顶点的第一条边
+		tmp := st[top]                // 取栈顶元素
+		p := G.AdjList[tmp].FirstArc // p指向该顶点的第一条边
 		/* 下面这个循环是p沿着边行走并将图中经过的顶点入栈的过程 */
 		// 找到当前顶点第一个没有访问过的邻接顶点或者p走到当前链表尾部时，循环停止
 		for p != nil && visitDFSNoRec[p.AdjVex] == 1 {
@@ -91,10 +90,10 @@ func DFSNoRec(G *AGraph, v0 int32) {
 		if p == nil {
 			top--
 		} else {
-			visitGraph(v)
-			visitDFSNoRec[v] = 1
+			visitGraph(p.AdjVex)
+			visitDFSNoRec[p.AdjVex] = 1
 			top++
-			st[top] = p.AdjVex
+			st[top] = int(p.AdjVex)
 		}
 	}
 }
@@ -103,21 +102,21 @@ func DFSNoRec(G *AGraph, v0 int32) {
 /*
 注意：选择在入队时进行访问而不是出队时进行访问的好处是可防止顶点重复进队，如果图是个环，可能引起死循环
 */
-var visitBFS [MaxSize]int32 // 顶点的访问标记（0：未访问；1：已访问）
+var visitBFS []int32 // 顶点的访问标记（0：未访问；1：已访问）
 func BFS(G *AGraph, v int32) {
 	// 1.初始化一个队列，用来辅助完成图的BFS（类似于二叉树的层次遍历）
-	var que [MaxSize]int32 // 使用循环队列
-	var front int32 = 0    // 队头
-	var rear int32 = 0     // 队尾
+	var que []int32 = make([]int32, G.N) // 使用循环队列
+	var front int32 = 0                  // 队头
+	var rear int32 = 0                   // 队尾
 	// 2.先让当前顶点v入队并访问之
-	rear = (rear + 1) % MaxSize
+	rear++
 	que[rear] = v
 	visitBFS[v] = 1
 	visitGraph(v)
 	// 3.在队列不为空的时候进行遍历
 	for front != rear {
 		// 4.队头顶点出队
-		front = (front + 1) % MaxSize
+		front++
 		j := que[front]
 		// 5.将刚出队顶点的所有边所指向的尚未被访问的顶点依次入队
 		p := G.AdjList[j].FirstArc // p指向该顶点的第一条边
@@ -126,7 +125,7 @@ func BFS(G *AGraph, v int32) {
 			if visitBFS[p.AdjVex] == 0 {
 				visitBFS[p.AdjVex] = 1
 				visitGraph(p.AdjVex)
-				rear = (rear + 1) % MaxSize
+				rear++
 				que[rear] = p.AdjVex
 			}
 			// 7.p依次指向与顶点相连的所有边
@@ -134,6 +133,8 @@ func BFS(G *AGraph, v int32) {
 		}
 	}
 }
+
+/* ============================树的遍历 end ============================ */
 
 // 操作遍历顶点（此处只做简单打印）
 func visitGraph(data interface{}) {
