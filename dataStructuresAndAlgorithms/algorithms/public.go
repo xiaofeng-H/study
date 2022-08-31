@@ -47,3 +47,10 @@ func PrintArray(a []int) {
 	}
 	fmt.Println()
 }
+
+// 交换数组中的两个值
+func Swap(arr []int, a, b int) {
+	tmp := arr[a]
+	arr[a] = arr[b]
+	arr[b] = tmp
+}

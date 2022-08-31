@@ -46,6 +46,32 @@ func BubbleSort(a []int) {
 	algorithms.PrintArray(a)
 }
 
+// 冒泡排序进阶：双向冒泡排序
+func BubbleSortDoubleDirection(arr []int) {
+	var left int = 0
+	var right int = len(arr) - 1
+	var flag bool = true
+
+	for flag {
+		flag = false
+		for i := left; i < right; i++ {
+			if arr[i] > arr[i+1] {
+				algorithms.Swap(arr, i, i+1)
+				flag = true
+			}
+		}
+		right--
+
+		for j := right; j > left; j-- {
+			if arr[j] < arr[j-1] {
+				algorithms.Swap(arr, j, j-1)
+				flag = true
+			}
+		}
+		left++
+	}
+}
+
 /**
  * 快速排序
  * 算法思想：

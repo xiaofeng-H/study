@@ -47,6 +47,28 @@ func DirectInsertSort(a []int) {
 	algorithms.PrintArray(a)
 }
 
+// 直接插入排序（单链表）
+func DirectInsertSortOfLinkList(head *algorithms.ListNode) {
+	var cur, tmp, node, pre *algorithms.ListNode
+	if head.Next != nil {
+		cur = head.Next.Next
+		head.Next.Next = nil
+		for cur != nil {
+			pre = head
+			node = pre.Next
+			for node != nil && node.Val < cur.Val {
+				// 在有序表中找到一个结点q，其val值刚好大于p.val
+				pre = cur
+				node = node.Next
+			}
+			tmp = cur.Next
+			cur.Next = pre.Next
+			pre.Next = cur
+			cur = tmp
+		}
+	}
+}
+
 /**
  * 折半插入排序
  * 算法思想：与直接插入排序类似，只是在查找插入位置时适用二分查找以提升查找速率
