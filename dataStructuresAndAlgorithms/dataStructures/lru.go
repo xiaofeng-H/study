@@ -1,4 +1,4 @@
-package algorithms
+package dataStructures
 
 /*
 LRU算法详解
@@ -10,16 +10,15 @@ LRU算法详解
 删除，而这个key只能由Node得到。如果Node结构中只存储了val，那么我们就无法得知key是什么，就无法删除
 map中的键，造成错误。
 */
-/*
-双链表结点
-*/
-type Node struct {
+
+// node 双链表结点
+type node struct {
 	key, val  int
-	pre, next *Node
+	pre, next *node
 }
 
-func NewNode(k, v int) *Node {
-	return &Node{
+func newNode(k, v int) *node {
+	return &node{
 		key:  k,
 		val:  v,
 		pre:  nil,
@@ -27,26 +26,24 @@ func NewNode(k, v int) *Node {
 	}
 }
 
-// 获取Node的key
-func (n *Node) GetKey() int {
+// GetKey 获取Node的key
+func (n *node) GetKey() int {
 	return n.key
 }
 
-/*
-双链表
-*/
+// DoubleList 双链表
 type DoubleList struct {
 	// 头结点
-	Root Node
+	Root node
 	// 链表长度
 	len int
 }
 
-func (dl *DoubleList) GeetRoot() *Node {
+func (dl *DoubleList) GeetRoot() *node {
 	return &dl.Root
 }
 
-// 初始化方法
+// Init 初始化方法
 func (dl *DoubleList) Init() *DoubleList {
 	dl.Root.next = &dl.Root
 	dl.Root.pre = &dl.Root
@@ -58,8 +55,8 @@ func NewDoubleList() *DoubleList {
 	return new(DoubleList).Init()
 }
 
-// 在链表头部添加结点x，时间复杂度O(1)
-func (dl *DoubleList) AddFirst(x *Node) {
+// AddFirst 在链表头部添加结点x，时间复杂度O(1)
+func (dl *DoubleList) AddFirst(x *node) {
 	x.next = dl.Root.next
 	dl.Root.next.pre = x
 	x.pre = &dl.Root
@@ -67,9 +64,9 @@ func (dl *DoubleList) AddFirst(x *Node) {
 	dl.len++
 }
 
-// 删除链表中的x结点（x一定存在）
+// Remove 删除链表中的x结点（x一定存在）
 // 由于是双链表且给的是Node结点，时间复杂度O(1)
-func (dl *DoubleList) Remove(x *Node) {
+func (dl *DoubleList) Remove(x *node) {
 	x.pre.next = x.next
 	x.next.pre = x.pre
 	x.next = nil // 防止内存泄露
@@ -77,8 +74,8 @@ func (dl *DoubleList) Remove(x *Node) {
 	dl.len--
 }
 
-// 删除链表中的最后一个结点，并返回该结点，时间复杂度O(1)
-func (dl *DoubleList) RemoveLast() *Node {
+// RemoveLast 删除链表中的最后一个结点，并返回该结点，时间复杂度O(1)
+func (dl *DoubleList) RemoveLast() *node {
 	x := dl.Root.pre
 	x.pre.next = &dl.Root
 	dl.Root.pre = x.pre
@@ -87,15 +84,15 @@ func (dl *DoubleList) RemoveLast() *Node {
 	return x
 }
 
-// 返回链表的长度，时间复杂度O(1)
+// Len 返回链表的长度，时间复杂度O(1)
 func (dl *DoubleList) Len() int {
 	return dl.len
 }
 
 type LRUCache struct {
 	// key映射到Node(key,val)
-	m map[int]*Node
-	// Node(k1,v1)<->Node(k2,v2)...
+	m map[int]*node
+	// node(k1,v1)<->node(k2,v2)...
 	cache *DoubleList
 	// 最大容量
 	cap int
@@ -103,7 +100,7 @@ type LRUCache struct {
 
 func NewLRUCache(capacity int) *LRUCache {
 	return &LRUCache{
-		m:     make(map[int]*Node),
+		m:     make(map[int]*node),
 		cache: NewDoubleList(),
 		cap:   capacity,
 	}
@@ -122,7 +119,7 @@ func (lru *LRUCache) Get(key int) int {
 
 func (lru *LRUCache) Put(key, val int) {
 	// 先把新结点x做出来
-	x := NewNode(key, val)
+	x := newNode(key, val)
 	if node, ok := lru.m[key]; ok { // key已经存在
 		// 删除旧的结点，新的插到头部
 		lru.cache.Remove(node)

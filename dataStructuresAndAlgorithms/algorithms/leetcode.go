@@ -1405,13 +1405,13 @@ func hasCycle141(head *ListNode) bool {
 /*
 「力扣」第  题（）
 时间复杂度：O(N*N)
-*//*
+*/ /*
 「力扣」第  题（）
 时间复杂度：O(N*N)
-*//*
+*/ /*
 「力扣」第  题（）
 时间复杂度：O(N*N)
-*//*
+*/ /*
 「力扣」第  题（）
 时间复杂度：O(N*N)
 */
@@ -1594,9 +1594,19 @@ func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
 }
 
 /*
-「力扣」第 2148 题（元素计数）
-*/
+「力扣」第 870 题（优势洗牌）
+算法思路：田忌赛马
 
+func AdvantageCount870(nums1 []int, nums2 []int) []int {
+	var pq [][2]int // 辅助优先队列————0：nums2下标；1：nums2数值
+
+}
+
+// 堆排序
+func heapSort(arr [][2]int) {
+	for i := 0;
+}
+*/
 /*
 「力扣」第 2148 题（元素计数）
 */
@@ -1747,7 +1757,7 @@ func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
 
 /*
 「力扣」第 2148 题（元素计数）
-*//*
+*/ /*
 「力扣」第 2148 题（元素计数）
 */
 
@@ -2052,7 +2062,7 @@ func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
 
 /*
 「力扣」第 2148 题（元素计数）
-*//*
+*/ /*
 「力扣」第 2148 题（元素计数）
 */
 

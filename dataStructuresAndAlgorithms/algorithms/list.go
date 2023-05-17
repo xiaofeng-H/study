@@ -239,3 +239,15 @@ func IsMajority(A []int) int {
 	// 不存在主元素
 	return -1
 }
+
+// 删除链表中值为X的元素（递归）
+func DeleteXRec(L *dataStructures.LNode, x int) *dataStructures.LNode {
+	if L == nil {
+		return nil
+	}
+	if L.Data == x {
+		L = DeleteXRec(L.Next, x)
+	}
+	L.Next = DeleteXRec(L.Next, x)
+	return L
+}

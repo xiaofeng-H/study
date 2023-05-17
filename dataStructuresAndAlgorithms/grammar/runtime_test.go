@@ -1,4 +1,4 @@
-package grammar
+package main
 
 import (
 	"fmt"
@@ -36,9 +36,11 @@ func TestRunTime1(t *testing.T) {
 	}
 }
 
-/*rt.2 Goexit
+/*
+rt.2 Goexit
 调用 runtime.Goexit() 将立即终止当前 goroutine 执⾏，调度器确保所有已注册 defer 延迟调用被执行。
-示例代码：*/
+示例代码：
+*/
 func TestRunTime2(t *testing.T) {
 	go func() {
 		defer fmt.Println("A.defer")
@@ -60,9 +62,11 @@ func TestRunTime2(t *testing.T) {
 	}
 }
 
-/*rt.3 GOMAXPROCS
+/*
+rt.3 GOMAXPROCS
 调用 runtime.GOMAXPROCS() 用来设置可以并行计算的CPU核数的最大值，并返回之前的值。
-示例代码：*/
+示例代码：
+*/
 func TestRunTime3(t *testing.T) {
 	n := runtime.GOMAXPROCS(1) //打印结果：111111111111111111110000000000000000000011111...
 	//n := runtime.GOMAXPROCS(2)     //打印结果：010101010101010101011001100101011010010100110...

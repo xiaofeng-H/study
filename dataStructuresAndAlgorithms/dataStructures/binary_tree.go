@@ -8,16 +8,16 @@ import (
 // 二叉树结点
 type BTNode struct {
 	data   interface{}
-	lChild *BTNode
-	rChild *BTNode
+	LChild *BTNode
+	RChild *BTNode
 }
 
 // 二叉树结点初始化
 func NewBTNode(data interface{}) BTNode {
 	return BTNode{
 		data:   data,
-		lChild: nil,
-		rChild: nil,
+		LChild: nil,
+		RChild: nil,
 	}
 }
 
@@ -32,8 +32,8 @@ func PreOrderInitRec(arr []int) *BTNode {
 	var t BTNode
 	if arr[i] != 0 {
 		t = BTNode{arr[i], nil, nil}
-		t.lChild = PreOrderInitRec(arr)
-		t.rChild = PreOrderInitRec(arr)
+		t.LChild = PreOrderInitRec(arr)
+		t.RChild = PreOrderInitRec(arr)
 	} else {
 		return nil
 	}
@@ -47,10 +47,10 @@ func ArrayToLinkInitRec(i int, arr []int) *BTNode {
 	}
 	t := &BTNode{arr[i], nil, nil}
 	if i < len(arr) && 2*i+1 < len(arr) {
-		t.lChild = ArrayToLinkInitRec(2*i+1, arr)
+		t.LChild = ArrayToLinkInitRec(2*i+1, arr)
 	}
 	if i < len(arr) && 2*i+2 < len(arr) {
-		t.rChild = ArrayToLinkInitRec(2*i+2, arr)
+		t.RChild = ArrayToLinkInitRec(2*i+2, arr)
 	}
 	return t
 }
@@ -64,8 +64,8 @@ func PreInInitBT(pre, in []rune, l1, r1, l2, r2 int) *BTNode {
 	// 核心步骤开始
 	node := BTNode{
 		data:   nil,
-		lChild: nil,
-		rChild: nil,
+		LChild: nil,
+		RChild: nil,
 	}
 	i := l2
 	for i <= r2 {
@@ -76,8 +76,8 @@ func PreInInitBT(pre, in []rune, l1, r1, l2, r2 int) *BTNode {
 		i++
 	}
 	// 注意下标的修改（2022/8/21 23:19）
-	node.lChild = PreInInitBT(pre, in, l1+1, l1+i-l2, l2, i-1)
-	node.rChild = PreInInitBT(pre, in, l1+i-l2+1, r1, i+1, r2)
+	node.LChild = PreInInitBT(pre, in, l1+1, l1+i-l2, l2, i-1)
+	node.RChild = PreInInitBT(pre, in, l1+i-l2+1, r1, i+1, r2)
 
 	return &node
 }
@@ -125,8 +125,8 @@ func PreMidInitRec(pa []int, ma []int, preI int, midI int, len int) *BTNode {
 			}
 		}
 		t := BTNode{p, nil, nil}
-		t.lChild = PreMidInitRec(pa, ma, preI+1, midI, i)
-		t.rChild = PreMidInitRec(pa, ma, preI+i+1, midI+i+1, len-1-i)
+		t.LChild = PreMidInitRec(pa, ma, preI+1, midI, i)
+		t.RChild = PreMidInitRec(pa, ma, preI+i+1, midI+i+1, len-1-i)
 		return &t
 	}
 	return nil
@@ -141,8 +141,8 @@ func PreOrderRec(bt *BTNode) {
 		return
 	}
 	visitBT(bt.data)
-	PreOrderRec(bt.lChild)
-	PreOrderRec(bt.rChild)
+	PreOrderRec(bt.LChild)
+	PreOrderRec(bt.RChild)
 }
 
 // 二叉树先根遍历（非递归）
@@ -165,13 +165,13 @@ func PreOrderNoRec(bt *BTNode) {
 		element = stack[top]
 		top--
 		visitBT(element.data)
-		if element.rChild != nil {
+		if element.RChild != nil {
 			top++
-			stack[top] = element.rChild
+			stack[top] = element.RChild
 		}
-		if element.lChild != nil {
+		if element.LChild != nil {
 			top++
-			stack[top] = element.lChild
+			stack[top] = element.LChild
 		}
 	}
 }
@@ -181,9 +181,9 @@ func InOrderRec(bt *BTNode) {
 	if bt == nil {
 		return
 	}
-	InOrderRec(bt.lChild)
+	InOrderRec(bt.LChild)
 	visitBT(bt.data)
-	InOrderRec(bt.rChild)
+	InOrderRec(bt.RChild)
 }
 
 // 二叉树中根遍历（非递归）
@@ -205,7 +205,7 @@ func InOrderNoRec(bt *BTNode) {
 		for element != nil {
 			top++
 			stack[top] = element
-			element = element.lChild
+			element = element.LChild
 		}
 		// 4.栈不空的情况下出栈，并让被操作元素指向出栈元素的右孩子，以此来让被操作元素右孩子的所有左子孙入栈，
 		// 依次循环，便可以按中根遍历遍历完所有的元素
@@ -214,7 +214,7 @@ func InOrderNoRec(bt *BTNode) {
 			top--
 			visitBT(element.data)
 			// 被操作元素指向自己的右孩子
-			element = element.rChild
+			element = element.RChild
 		}
 	}
 }
@@ -224,8 +224,8 @@ func PostOrderRec(bt *BTNode) {
 	if bt == nil {
 		return
 	}
-	PostOrderRec(bt.lChild)
-	PostOrderRec(bt.rChild)
+	PostOrderRec(bt.LChild)
+	PostOrderRec(bt.RChild)
 	visitBT(bt.data)
 }
 
@@ -258,13 +258,13 @@ func PostOrderNoRec(bt *BTNode) {
 		stack2[top2] = element
 		// 4.让栈顶元素的左孩子先入辅助栈，再让右孩子入辅助栈，此过程使得得到的出栈序列为逆后序序列，
 		// 是与先序遍历非递归算法最大的区别
-		if element.lChild != nil {
+		if element.LChild != nil {
 			top1++
-			stack1[top1] = element.lChild
+			stack1[top1] = element.LChild
 		}
-		if element.rChild != nil {
+		if element.RChild != nil {
 			top1++
-			stack1[top1] = element.rChild
+			stack1[top1] = element.RChild
 		}
 	}
 	// 5.以上过程得到了逆后序遍历序列，并且保存到了保存栈中，此处只需遍历保存栈便可得到后序遍历序列
@@ -299,16 +299,16 @@ func LevelTraverse(bt *BTNode) {
 			// 访问对头结点，此处只简单打印
 			visitBT(q.data)
 			// 如果左子树不空，则左子树的根结点入队
-			if q.lChild != nil {
+			if q.LChild != nil {
 				// 此处假设队列容量大于结点个数，不做队列满判断，下同
 				rear = (rear + 1) % MaxSize
-				que[rear] = q.lChild
+				que[rear] = q.LChild
 			}
 			// 如果右子树不空，则左子树的根结点入队
-			if q.rChild != nil {
+			if q.RChild != nil {
 				// 此处假设队列容量大于结点个数，不做队列满判断，下同
 				rear = (rear + 1) % MaxSize
-				que[rear] = q.rChild
+				que[rear] = q.RChild
 			}
 		}
 	}
@@ -338,8 +338,8 @@ func GetLevelOfBTN(bt *BTNode, x rune) {
 		fmt.Printf("%v所在的层次为：%d\n", string(x), Level)
 
 	}
-	GetLevelOfBTN(bt.lChild, x)
-	GetLevelOfBTN(bt.rChild, x)
+	GetLevelOfBTN(bt.LChild, x)
+	GetLevelOfBTN(bt.RChild, x)
 	Level--
 }
 

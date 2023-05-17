@@ -1,4 +1,4 @@
-package grammar
+package main
 
 import (
 	"fmt"
@@ -65,5 +65,5 @@ func ReflectStructTest() {
 
 func TestReflect2(t *testing.T) {
 	var r = rune(32)
-	fmt.Println(reflect.TypeOf(r).Name()=="int8")
+	fmt.Println(reflect.TypeOf(r).Name() == "int8")
 }

@@ -1,4 +1,4 @@
-package grammar
+package slice_array
 
 import (
 	"fmt"
@@ -32,27 +32,26 @@ func Test2(t *testing.T) {
 	}
 }
 
-func change1(arr []int) {
-	arr[0] = 0
-	arr = append(arr, 2)
-	arr = append(arr, 3)
-	for e := range arr {
-		fmt.Println(arr[e])
-	}
-}
-
-func change2(arr *[]int) {
-	*arr = append(*arr, 2)
-	*arr = append(*arr, 3)
-}
-
 func Test3(t *testing.T) {
 	var slice = []int{1, 2, 3, 4, 5, 6, 7, 8}
 	index := 6
-	sl := append(slice[7:7],slice[1:]...)
+	sl := append(slice[7:7], slice[1:]...)
 	fmt.Println(sl)
 	fmt.Println(len(sl))
 	slice = append(slice[:index], slice[index+1:]...)
 	fmt.Println(slice)
 	fmt.Println(len(slice))
+}
+
+// 测试切片关于引用、指针、append地址变换
+func Test4(t *testing.T) {
+	var list = make([]int, 0, 2)
+	fmt.Printf("切片变量的值为：%p,切片变量的地址为：%p\n", list, &list)
+	list = append(list, 1, 2)
+	fmt.Println("------After appended 2 elements------")
+	fmt.Printf("切片变量的值为：%p,切片变量的地址为：%p\n", list, &list)
+	fmt.Println("------After appended by function------")
+	changeSlice(list)
+	fmt.Printf("切片变量的值为：%p,切片变量的地址为：%p\n", list, &list)
+	fmt.Println(list)
 }

@@ -58,7 +58,29 @@ func TestPreInInitBT(t *testing.T) {
 
 func TestInitSpecialBT(t *testing.T) {
 	bt := dataStructures.InitBTByPreInOrder()
-	dataStructures.PostOrderNoRec(bt)
+	//dataStructures.PostOrderNoRec(bt)
+	preOrder(bt)
+}
+
+// 求二叉树最大深度（递归思想理解）
+var res int = 0
+var depth int = 0
+
+func preOrder(bt *dataStructures.BTNode) {
+	if bt == nil {
+		return
+	}
+	depth++
+	fmt.Println(depth)
+	if bt.LChild == nil && bt.RChild == nil {
+		if res < depth {
+			res = depth
+		}
+	}
+	preOrder(bt.LChild)
+	preOrder(bt.RChild)
+	depth--
+	fmt.Println(depth)
 }
 
 // 求二叉树值为x的结点所在的层号

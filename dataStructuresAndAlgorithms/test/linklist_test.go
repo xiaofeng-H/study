@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"study/dataStructuresAndAlgorithms/algorithms"
 	"study/dataStructuresAndAlgorithms/dataStructures"
 	"testing"
 )
@@ -81,4 +82,17 @@ func TestMerge(t *testing.T) {
 		fmt.Println("LNode.Data=", p.Data)
 		p = p.Next
 	}
+}
+
+// 删除链表中值为X的所有元素
+func TestDelX(t *testing.T) {
+	var data = []int{1, 2, 3, 4, 5, 6, 5, 6, 7, 8, 5, 5, 5, 5, 5, 5, 8, 9, 88, 74, 4, 4, 5, 6}
+	ln := dataStructures.LNode{Next: nil, Data: len(data)}
+	ln.CreateListR(data)
+	fmt.Println("原先的链表为：")
+	ln.PrintLinkList()
+	var x int = 5
+	algorithms.DeleteXRec(&ln, x)
+	fmt.Printf("删除%d之后的链表为：\n", x)
+	ln.PrintLinkList()
 }

@@ -1,4 +1,4 @@
-package grammar
+package main
 
 import (
 	"fmt"
@@ -7,9 +7,12 @@ import (
 	"time"
 )
 
+func TestConcurrenceSequence(t *testing.T) {
+	ConcurrenceSequence()
+}
 func TestChannel(t *testing.T) {
 	ch := make(chan int) //这里就是创建了一个channel，这是无缓冲管道注意
-	go func() { //创建子go程
+	go func() {          //创建子go程
 		for i := 0; i < 6; i++ {
 			time.Sleep(2)
 			ch <- i //循环写入管道
