@@ -27,29 +27,34 @@ package algorithms
 */
 func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 	// dp 数组初始化
+	// dp[i][j]：表示在前i个物品可选择装入的情况下，当背包容量为j时，可装入的最大价值为dp[i][j]。
 	dp := make([][]int, N+1, W+1)
 	for i := 0; i <= N; i++ {
 		dp[i] = make([]int, W+1)
 	}
-	/*// base case（根据golang语法，int初始值会默认为0，故不需要做这步初始化）
+	// base case
 	for i := 0; i <= W; i++ {
+		// 没有物品可装入时，背包的最大价值为0
 		dp[0][i] = 0
 	}
 	for i := 0; i <= N; i++ {
+		// 背包容量为0时，不能装入物品，故背包的最大价值为0
 		dp[i][0] = 0
-	}*/
+	}
 	// 状态转移
 	for i := 1; i <= N; i++ {
 		for w := 1; w <= W; w++ {
+			// w：当前背包容量；wt[i-1]：当前准备加入的物品的体积
 			if (w - wt[i-1]) < 0 {
-				// 这种情况下只能选择不装入背包
+				// 1.若当前物品体积大于背包总容量，则不能装入背包
 				dp[i][w] = dp[i-1][w]
 			} else {
-				// 装入或者不装入背包，择优
+				// 2.否则，择优选择装入或者不装入背包
 				dp[i][w] = MaxIntAB(dp[i-1][w], dp[i-1][w-wt[i-1]]+val[i-1])
 			}
 		}
 	}
+	// dp[N][W]：表示背包容量为W且可选择N个物品时，背包能装下的最大价值。
 	return dp[N][W]
 }
 
@@ -105,23 +110,33 @@ func completeKnapsackProblem(amount int, coins []int) int {
 	for i := 0; i <= n; i++ {
 		dp[i] = make([]int, amount+1)
 	}
-	/*// base case（根据golang语法，int初始值会默认为0，故不需要做这步初始化）
+	// base case
 	for i := 0; i <= amount; i++ {
+		// 无硬币可选时，装法为0
 		dp[0][i] = 0
 	}
 	for i := 0; i <= n; i++ {
-		dp[i][0] = 0
-	}*/
+		// 要凑出总额为0时，不选择便是唯一的选择
+		dp[i][0] = 1
+	}
 	// 状态转移
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= amount; j++ {
-			if (j - coins[i]) >= 0 {
-				dp[i][j] = dp[i-1][j] + dp[i][j-coins[i]]
+			if (j - coins[i-1]) >= 0 {
+				// 该面值的硬币可供本次选择
+				/*
+					当能使用该面值的硬币时，总共的凑法便是不适用该硬币凑出目标金额的凑法和使用该面值硬币，
+					凑出目标金额减去该硬币面值的凑法之和。前者易于理解，后者可理解为再加一枚该面值的硬币便可凑出
+					目标金额，不过仍属于同一种凑法。
+				*/
+				dp[i][j] = dp[i-1][j] + dp[i][j-coins[i-1]]
 			} else {
+				// 该面值的硬币不能选择时，取之前的结果
 				dp[i][j] = dp[i-1][j]
 			}
 		}
 	}
+	// dp[n][amount]：n种面额的硬币凑出金额amount总共有dp[n][amount]种凑法
 	return dp[n][amount]
 }
 

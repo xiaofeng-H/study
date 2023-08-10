@@ -3,6 +3,7 @@ package sort
 import (
 	"fmt"
 	"study/dataStructuresAndAlgorithms/algorithms"
+	. "study/dataStructuresAndAlgorithms/dataStructures"
 )
 
 /**
@@ -25,7 +26,7 @@ func DirectInsertSort(a []int) {
 		fmt.Println("待排序列为空，请重新输入！！！")
 	}
 
-	// 1.因为一个数天然有序，所以从第二位才开始进行插入排序
+	// 1.因为第一个数天然有序，所以从第二位才开始进行插入排序
 	for i := 1; i < len(a); i++ {
 		// 2.从本算法思想可以看出，直接插入排序的核心思想是找到待排关键字在本趟排序中的恰当位置，所以无可避免的是要对原始序列元素进行
 		// 移位操作。为统一化，也为了方便理解，以下代码是数组元素移位操作的基本模板代码
@@ -47,23 +48,31 @@ func DirectInsertSort(a []int) {
 	algorithms.PrintArray(a)
 }
 
-// 直接插入排序（单链表）
-func DirectInsertSortOfLinkList(head *algorithms.ListNode) {
-	var cur, tmp, node, pre *algorithms.ListNode
+// @desc 直接插入排序（单链表）
+// @param *ListNode 单链表头结点的地址
+func DirectInsertSortOfLinkList(head *ListNode) {
+	var cur, tmp, node, pre *ListNode
+	// 1.单链表不为空
 	if head.Next != nil {
+		// 2.默认第一个结点有序，cur指向单链表第一个结点的后继
 		cur = head.Next.Next
+		// 3.单链表断链
 		head.Next.Next = nil
+		// 4.第一个结点有直接后继时，才真正进行直接插入排序
 		for cur != nil {
+			// 4.1 pre指向头结点
 			pre = head
+			// 4.2 node指向第一个结点
 			node = pre.Next
 			for node != nil && node.Val < cur.Val {
-				// 在有序表中找到一个结点q，其val值刚好大于p.val
-				pre = cur
+				// 4.3 在有序表中找到一个结点p，使其val值刚好大于cur.val
+				pre = node
 				node = node.Next
 			}
+			// 4.4 将cur插入到已找到的位置
 			tmp = cur.Next
-			cur.Next = pre.Next
 			pre.Next = cur
+			cur.Next = node
 			cur = tmp
 		}
 	}

@@ -5,6 +5,13 @@ import (
 	"reflect"
 )
 
+// 二叉树结构体（力扣）
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 // 二叉树结点
 type BTNode struct {
 	data   interface{}
@@ -84,26 +91,28 @@ func PreInInitBT(pre, in []rune, l1, r1, l2, r2 int) *BTNode {
 
 /*
 创建一颗用于测试的二叉树，其二叉树和遍历结果如下：
-									A
-									|
-								/		\
-							/				\
-						/						\
-					B								C
-				/									|
-			/									  /	  \
-		/									    /		\
-	/										  /			  \
-  D											E				F
-	\										|					\
-		\								  /	  \						\
-			G							J		K						L
-		/		\													/
-	H				I											M
-				  /	  \											  \
-				O		P											N
-						  \
-							Q
+
+										A
+										|
+									/		\
+								/				\
+							/						\
+						B								C
+					/									|
+				/									  /	  \
+			/									    /		\
+		/										  /			  \
+	  D											E				F
+		\										|					\
+			\								  /	  \						\
+				G							J		K						L
+			/		\													/
+		H				I											M
+					  /	  \											  \
+					O		P											N
+							  \
+								Q
+
 先序：A,B,D,G,H,I,O,P,Q,C,E,J,K,F,L,M,N
 中序：D,H,G,O,I,P,Q,B,A,J,E,K,C,F,M,N,L
 后序：H,O,Q,P,I,G,D,B,J,K,E,N,M,L,F,C,A

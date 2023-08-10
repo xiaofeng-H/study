@@ -93,7 +93,7 @@ func (qs *QueueByDoubleStack) InsertQS(data interface{}) bool {
 	// 入栈未满则进队
 	if qs.insStack.Top < MAXSIZE {
 		/*qs.insStack.Top++
-		qs.insStack.Data[qs.insStack.Top] = data*/
+		qs.insStack.Val[qs.insStack.Top] = data*/
 
 		// 直接调用封装好的方法
 		qs.insStack.PushSq(data)
@@ -102,14 +102,14 @@ func (qs *QueueByDoubleStack) InsertQS(data interface{}) bool {
 	if qs.insStack.Top == MAXSIZE-1 && qs.delStack.IsEmptySq() {
 		/*// 转移元素
 		for i := 0; i <= qs.insStack.Top; i++ {
-			qs.delStack.Data[i] = qs.insStack.Data[i]
+			qs.delStack.Val[i] = qs.insStack.Val[i]
 		}
 		// 重置栈顶指针
 		qs.insStack.Top = 0
 		qs.delStack.Top = MAXSIZE - 1
 
 		// 入队
-		qs.insStack.Data[qs.insStack.Top] = data*/
+		qs.insStack.Val[qs.insStack.Top] = data*/
 
 		// 直接调用已封装好的方法
 		// 转移元素
@@ -134,7 +134,7 @@ func (qs *QueueByDoubleStack) DeleteQS() (bool, interface{}) {
 
 	// 如果出栈不为空，直接出队
 	if !qs.delStack.IsEmptySq() {
-		/*data := qs.delStack.Data[qs.delStack.Top]
+		/*data := qs.delStack.Val[qs.delStack.Top]
 		qs.delStack.Top--
 		return true, data*/
 
@@ -148,13 +148,13 @@ func (qs *QueueByDoubleStack) DeleteQS() (bool, interface{}) {
 	if qs.delStack.IsEmptySq() && !qs.insStack.IsEmptySq() {
 		/*// 转移元素
 		for i := 0; i < qs.insStack.Top; i++ {
-			qs.delStack.Data[i] = qs.insStack.Data[i]
+			qs.delStack.Val[i] = qs.insStack.Val[i]
 		}
 		// 重置栈底指针
 		qs.insStack.Top = -1
 		qs.delStack.Top = lMaxSize - 2
 
-		data := qs.delStack.Data[qs.delStack.Top]
+		data := qs.delStack.Val[qs.delStack.Top]
 		return true, data*/
 
 		// 直接调用已经封装好的方法

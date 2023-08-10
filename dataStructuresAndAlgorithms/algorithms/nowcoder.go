@@ -3,6 +3,7 @@ package algorithms
 import (
 	"fmt"
 	"math"
+	. "study/dataStructuresAndAlgorithms/dataStructures"
 )
 
 /**
@@ -10,11 +11,6 @@ import (
  * @param pHead ListNode类
  * @return ListNode类
  */
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 func ReverseList(pHead *ListNode) *ListNode {
 	// write code here
 	// 空链表处理
@@ -186,7 +182,6 @@ func isValid(board [][]rune, row int, col int) bool {
 	}
 	return true
 }
-
 
 func threeOrders(root *TreeNode) [][]int {
 	var res [][]int

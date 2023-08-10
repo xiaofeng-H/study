@@ -40,7 +40,7 @@ func ReSort(A []int, m, n int) bool {
 算法要求：差集保存在A中，并保持元素的递增有序性
 算法规模：时间复杂度：O(m+n); 空间复杂度：O(1)
 */
-func SubLinkList(A, B *dataStructures.LNode) bool {
+func SubLinkList(A, B *dataStructures.ListNode) bool {
 	if A.Next == nil {
 		fmt.Println("NUll LinkList!")
 		return false
@@ -54,12 +54,12 @@ func SubLinkList(A, B *dataStructures.LNode) bool {
 				break
 			}
 			for {
-				if p.Next.Data > q.Data || p.Next == nil {
+				if p.Next.Val > q.Val || p.Next == nil {
 					break
 				}
-				if p.Next.Data == q.Data {
+				if p.Next.Val == q.Val {
 					p.Next = p.Next.Next
-					A.Data--
+					A.Val--
 				} else {
 					p = p.Next
 				}
@@ -72,13 +72,13 @@ func SubLinkList(A, B *dataStructures.LNode) bool {
 	p := A
 	q := B.Next
 	for p.Next != nil && q != nil {
-		if p.Next.Data < q.Data {
+		if p.Next.Val < q.Val {
 			p = p.Next
-		} else if p.Next.Data > q.Data {
+		} else if p.Next.Val > q.Val {
 			q = q.Next
 		} else {
 			p.Next = p.Next.Next
-			A.Data--
+			A.Val--
 		}
 	}
 
@@ -106,7 +106,7 @@ func ArrayReverse(A []int) {
 
 // @desc    单链表的逆置（要求：不能建立新的结点）
 // @param   ln
-func LinkListReverse(ln *dataStructures.LNode) {
+func LinkListReverse(ln *dataStructures.ListNode) {
 	if ln.Next == nil {
 		fmt.Println("The linkList is null")
 	}
@@ -114,7 +114,7 @@ func LinkListReverse(ln *dataStructures.LNode) {
 	// 单链表使用头插法建立时，得到的表示一个顺序与原先相反的单链表，故此处使用头插法思想
 	p := ln.Next
 	ln.Next = nil
-	var q *dataStructures.LNode // 头插法建表时使用的中间变量
+	var q *dataStructures.ListNode // 头插法建表时使用的中间变量
 	for p != nil {
 		// 思考良久，如不借助第三个指针变量，无法完成头插法构建单链表操作，看了参考解法亦然（2021/7/14 16:53）
 		// 你思考个锤子哦，人家只是说不让你新建结点，又没说不让你使用其他变量，真是咸吃萝卜淡操心！
@@ -241,11 +241,11 @@ func IsMajority(A []int) int {
 }
 
 // 删除链表中值为X的元素（递归）
-func DeleteXRec(L *dataStructures.LNode, x int) *dataStructures.LNode {
+func DeleteXRec(L *dataStructures.ListNode, x int) *dataStructures.ListNode {
 	if L == nil {
 		return nil
 	}
-	if L.Data == x {
+	if L.Val == x {
 		L = DeleteXRec(L.Next, x)
 	}
 	L.Next = DeleteXRec(L.Next, x)

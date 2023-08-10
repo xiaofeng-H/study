@@ -5,15 +5,10 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	. "study/dataStructuresAndAlgorithms/dataStructures"
 )
 
 /*======================================二叉树 start============================================*/
-// 二叉树结构体
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 /*
 「力扣」第 94 题（二叉树中序遍历）

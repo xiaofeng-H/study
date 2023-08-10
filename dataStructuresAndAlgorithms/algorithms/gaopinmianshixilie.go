@@ -3,7 +3,7 @@ package algorithms
 import (
 	"fmt"
 	"math"
-	"study/dataStructuresAndAlgorithms/dataStructures"
+	. "study/dataStructuresAndAlgorithms/dataStructures"
 )
 
 /*
@@ -524,8 +524,10 @@ func stackOf(stack []byte) byte {
 /*
 消失的数字（力扣面试题17.04）
 算法思想：异或运算（哈希解法很简单了）
-		异或运算规则：⼀个数和它本⾝做异或运算结果为 0，⼀个数和 0 做异或运算还是它本⾝，
-					即a ^ a = 0, a ^ 0 = a，且满足交换律和结合律。
+
+	异或运算规则：⼀个数和它本⾝做异或运算结果为 0，⼀个数和 0 做异或运算还是它本⾝，
+				即a ^ a = 0, a ^ 0 = a，且满足交换律和结合律。
+
 时间复杂度：O(N)
 空间复杂度：O(1)
 */
@@ -544,7 +546,9 @@ func missingNumber(nums []int) int {
 /*
 错误的集合（力扣645）
 算法思想：可使用哈希思想，很简单，不过时间复杂度和空间复杂度都为O(N)。现在使用巧妙解法使得空间复杂度为O(1)。
-		通过将每个索引对应的元素变成负数，以表⽰这个索引被对应过⼀次了
+
+	通过将每个索引对应的元素变成负数，以表⽰这个索引被对应过⼀次了
+
 时间复杂度：O(N)
 空间复杂度：O(1)
 */
@@ -695,7 +699,7 @@ func solve(board [][]byte) {
 
 	m, n := len(board), len(board[0])
 	// 给dummy留一个额外的位置
-	uf := dataStructures.NewUF(m*n + 1)
+	uf := NewUF(m*n + 1)
 	dummy := m * n
 	// 将首列和末列的0与dummy连通
 	for i := 0; i < m; i++ {
@@ -749,7 +753,7 @@ func solve(board [][]byte) {
 */
 func equationsPossible990(equations []string) bool {
 	// 26 个英文字母
-	uf := dataStructures.NewUF(26)
+	uf := NewUF(26)
 	// 先让相等的字母形成连通分量
 	for _, v := range equations {
 		if v[1] == '=' {

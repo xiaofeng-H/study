@@ -28,10 +28,10 @@ func TestSubLinkList(t *testing.T) {
 	a := []int{1, 3, 5, 7, 9, 13, 17, 222}
 	b := []int{3, 5, 8, 9, 77}
 
-	var A = dataStructures.LNode{Next: nil, Data: len(a)}
-	var B = dataStructures.LNode{Next: nil, Data: len(b)}
-	A.CreateListR(a)
-	B.CreateListR(b)
+	var A = dataStructures.ListNode{Next: nil, Val: len(a)}
+	var B = dataStructures.ListNode{Next: nil, Val: len(b)}
+	A.CreateLinkListR(a)
+	B.CreateLinkListR(b)
 
 	A.PrintLinkList()
 	B.PrintLinkList()
@@ -59,8 +59,8 @@ func TestArrayReverse(t *testing.T) {
 
 func TestLinkListReverse(t *testing.T) {
 	var data = []int{1, 2, 3, 4, 5, 6}
-	ln := dataStructures.LNode{Next: nil, Data: len(data)}
-	ln.CreateListR(data)
+	ln := dataStructures.ListNode{Next: nil, Val: len(data)}
+	ln.CreateLinkListR(data)
 	fmt.Println("---Before LinkList Reverse---")
 	ln.PrintLinkList()
 	algorithms.LinkListReverse(&ln)

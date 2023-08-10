@@ -5,20 +5,20 @@ import (
 )
 
 // @desc  	单链表结点定义
-type LNode struct {
-	Data int
-	Next *LNode
+type ListNode struct {
+	Val  int
+	Next *ListNode
 }
 
 // 打印单链表
-func (ln *LNode) PrintLinkList() {
-	fmt.Printf("---The linkList`length is %d and data is:\n", ln.Data)
+func (ln *ListNode) PrintLinkList() {
+	fmt.Printf("---The linkList`length is %d and data is:\n", ln.Val)
 	p := ln.Next
 	for {
 		if p == nil {
 			break
 		}
-		fmt.Printf("%d->", p.Data)
+		fmt.Printf("%d->", p.Val)
 		p = p.Next
 	}
 	fmt.Print("nil\n")
@@ -27,19 +27,19 @@ func (ln *LNode) PrintLinkList() {
 // @desc  	        尾插法建立单链表
 // @param  ln       单链表头结点
 // @param  data     待插入的结点数据
-func (ln *LNode) CreateListR(data []int) {
+func (ln *ListNode) CreateLinkListR(data []int) {
 	if len(data) <= 0 {
 		fmt.Println("The length of data is error!")
 	}
 
-	var s *LNode // 用来指向新申请的结点
-	var r *LNode // 始终指向ln的终端结点
+	var s *ListNode // 用来指向新申请的结点
+	var r *ListNode // 始终指向ln的终端结点
 
-	r = new(LNode)
+	r = new(ListNode)
 	r = ln
 	for i := 0; i < len(data); i++ {
-		s = new(LNode)
-		s.Data = data[i]
+		s = new(ListNode)
+		s.Val = data[i]
 		r.Next = s
 		r = r.Next
 	}
@@ -49,15 +49,15 @@ func (ln *LNode) CreateListR(data []int) {
 // @desc  	        头插法建立单链表
 // @param  ln       单链表头结点
 // @param  data     待插入的结点数据
-func CreateListF(ln *LNode, data []int) {
+func CreateLinkListF(ln *ListNode, data []int) {
 	if len(data) < 0 {
 		fmt.Println("The length of data is error")
 	}
 
 	ln.Next = nil
 	for i := 0; i < len(data); i++ {
-		s := new(LNode)
-		s.Data = data[i]
+		s := new(ListNode)
+		s.Val = data[i]
 		s.Next = ln.Next
 		ln.Next = s
 	}
@@ -67,14 +67,14 @@ func CreateListF(ln *LNode, data []int) {
 // @param   ln      单链表的头结点
 // @param   x       待删除的元素
 // @return  bool    成功与否
-func FindAndDelete(ln *LNode, x int) bool {
+func FindAndDelete(ln *ListNode, x int) bool {
 	p := ln
 	// 查找是否存在元素x
 	for {
 		if p.Next == nil {
 			return false
 		}
-		if p.Next.Data == x {
+		if p.Next.Val == x {
 			break
 		}
 		p = p.Next
@@ -82,7 +82,7 @@ func FindAndDelete(ln *LNode, x int) bool {
 	// 找到则删除
 	p.Next = p.Next.Next
 	// 单链表长度-1
-	ln.Data--
+	ln.Val--
 	return true
 }
 
@@ -90,7 +90,7 @@ func FindAndDelete(ln *LNode, x int) bool {
 // @param   a   待merge的单链表
 // @param   b   待merge的单链表
 // @return  c   merge后得到的单链表
-func MergeOrderLinkList(a, b *LNode) (c *LNode) {
+func MergeOrderLinkList(a, b *ListNode) (c *ListNode) {
 	if a.Next == nil && b.Next == nil {
 		fmt.Println("The list is both nil!")
 	}
@@ -101,16 +101,16 @@ func MergeOrderLinkList(a, b *LNode) (c *LNode) {
 	p := a.Next
 	q := b.Next
 	c = a
-	c.Data = a.Data + b.Data
+	c.Val = a.Val + b.Val
 	c.Next = nil // 必去要有指针先去接收a.next的结点
 	fmt.Printf("The head is %v\n", c)
-	r := new(LNode)
+	r := new(ListNode)
 	r = c
 	for {
 		if p == nil || q == nil {
 			break
 		}
-		if p.Data <= q.Data {
+		if p.Val <= q.Val {
 			r.Next = p
 			p = p.Next
 			r = r.Next
