@@ -5,7 +5,7 @@ package dataStructures
 关键点：
 1、⽤  parent  数组记录每个节点的⽗节点，相当于指向⽗节点的指针，所以  parent  数组内实际存储着⼀个森林（若⼲棵多叉树）。
 2、⽤  size  数组记录着每棵树的重量，⽬的是让  union  后树依然拥有平衡性，⽽不会退化成链表，影响操作效率。
-3、在  find  函数中进⾏路径压缩，保证任意树的⾼度保持在常数，使得union  和  connected  API 时间复杂度为 O(1)。
+3、在  find  函数中进⾏路径压缩，保证任意树的⾼度保持在常数，使得 union  和  connected  API 时间复杂度为 O(1)。
 */
 // 并查集结构体
 type UnionFindSet struct {
@@ -42,7 +42,7 @@ func NewUF(n int) *UnionFindSet {
 
 /*
 将结点p、q连接使其连通
-时间复杂度：O(logN)/进行路径压缩后优化为O(1)
+时间复杂度：O(logN) || 进行路径压缩后优化为O(1)
 */
 func (u *UnionFindSet) Union(p, q int) {
 	rootP := u.Find(p)
@@ -55,8 +55,8 @@ func (u *UnionFindSet) Union(p, q int) {
 
 	// 将两棵树合并为一颗
 	// 连接两颗树不做优化可能会使树极度不平衡，从而增加Find方法的时间复杂度
-	/*u.parents[rootP] = rootQ
-	// parent[rootQ] = rootP 也一样*/
+	/* u.parents[rootP] = rootQ
+	   u.parents[rootQ] = rootP 也一样 */
 	// 小树接到大树下面，较平衡
 	if u.size[rootP] > u.size[rootQ] {
 		u.parents[rootQ] = rootP
@@ -72,8 +72,8 @@ func (u *UnionFindSet) Union(p, q int) {
 
 /*
 返回某个结点x的根结点
-时间复杂度：O(logN)/进行路径压缩后优化为O(1)
-路径压缩结果：可⻅，调⽤ find  函数每次向树根遍历的同时，顺⼿将树⾼缩短了，最终所有树⾼都不会超过 3（ union  的时候树⾼可能达到 3）。
+时间复杂度：O(logN) || 进行路径压缩后优化为O(1)
+路径压缩结果：可⻅，调⽤ find 函数每次向树根遍历的同时，顺⼿将树⾼缩短了，最终所有树⾼都不会超过 3（ union 的时候树⾼可能达到 3）。
 */
 func (u *UnionFindSet) Find(x int) int {
 	// 根结点的parent[x] == x

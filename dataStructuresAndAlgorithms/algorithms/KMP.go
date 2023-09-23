@@ -1,6 +1,6 @@
 package algorithms
 
-// 初始化next数组
+// 初始化next数组（须明确next数组的含义才能更好的理解以下算法）
 func GetNext(pat string) []int {
 	var next []int = make([]int, len(pat))
 	next[0] = 0
@@ -24,7 +24,8 @@ func GetNext(pat string) []int {
 
 	return next
 }
-func GetNextVal(pat string) []int{
+
+func GetNextVal(pat string) []int {
 	var nextVal []int = make([]int, len(pat))
 	nextVal[0] = 0
 
@@ -51,6 +52,7 @@ func GetNextVal(pat string) []int{
 
 	return nextVal
 }
+
 // KMP
 func KMP(str, pat string) int {
 	if str == "" {
