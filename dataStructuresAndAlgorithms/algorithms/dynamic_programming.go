@@ -1,5 +1,7 @@
 package algorithms
 
+import "fmt"
+
 /*======================================动态规划 start============================================*/
 /*======================================动态规划之背包问题 start============================================*/
 /*
@@ -103,7 +105,7 @@ func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 	return dp[N][W]
 	最后⼀步，把伪码翻译成代码，处理⼀些边界情况。
 */
-func completeKnapsackProblem(amount int, coins []int) int {
+func CompleteKnapsackProblem(amount int, coins []int) int {
 	n := len(coins) // 面值不同的货币种类数
 	// dp 数组初始化
 	dp := make([][]int, n+1)
@@ -137,6 +139,12 @@ func completeKnapsackProblem(amount int, coins []int) int {
 		}
 	}
 	// dp[n][amount]：n种面额的硬币凑出金额amount总共有dp[n][amount]种凑法
+	for i := 0; i < len(dp); i++ {
+		for j := 1; j < len(dp[i]); j++ {
+			fmt.Printf("%d\t", dp[i][j])
+		}
+		fmt.Println()
+	}
 	return dp[n][amount]
 }
 
@@ -304,7 +312,7 @@ func coinChange322(coins []int, amount int) int {
 	注意：「⼦序列」和「⼦串」这两个名词的区别，⼦串⼀定是连续的，⽽⼦序列不⼀定是连续的。
 */
 /*
-卧槽，有次面试就问到了这个问题，不同的是还有求出具体的子序列，我他妈没有答出来（2022/6/28 20:18）
+卧槽，有次面试就问到了这个问题，不同的是还要求出具体的子序列，我他妈没有答出来（2022/6/28 20:18）
 */
 func lengthOfLIS300(nums []int) int {
 	// 序列长度
@@ -337,37 +345,53 @@ func lengthOfLIS300(nums []int) int {
 }
 
 /*
-「力扣」第 416 题（分割等和子集问题）
+「力扣」第 416 题（分割等和子集问题）（转化为 “01背包问题” ）
 时间复杂度：O(N*SUM/2)
 空间复杂带：O(N*SUM/2)
 */
 // 输⼊⼀个集合，返回是否能够分割成和相等的两个⼦集
 func canPartition416(nums []int) bool {
 	// 边界值处理
-	sum := 0
-	for k := range nums {
-		sum += nums[k]
+	if len(nums) < 2 {
+		// 元素个数小于2，则不能分割
+		return false
+	}
+	sum := 0       // 当前集合元素总和
+	max := nums[0] // 记录集合的最大值
+	for _, v := range nums {
+		sum += v
+		if max < v {
+			max = v
+		}
 	}
 	// 和为奇数时，不可能分割成两个和相等的集合
 	if sum%2 != 0 {
 		return false
 	}
-	// 状态初始化
-	n := len(nums)
 	sum /= 2
+	// 集合最大值大于总和的二分之一时，亦不可能分割成两个和相等的集合
+	if max > sum {
+		return false
+	}
+
+	// 状态初始化（变量：集合元素 + 集合总和/2）
+	n := len(nums)
+	// dp[i][j]：当选用前i个元素时，是否可以选则其中某些元素，使之其和为j
 	dp := make([][]bool, n+1)
 	for i := 0; i <= n; i++ {
 		dp[i] = make([]bool, sum+1)
-		// base case
+		// base case（不选取任何元素便可以凑出和为0，故dp[i][0]=true）
 		dp[i][0] = true
 	}
-	// 状态转移
+	// 状态转移（加入或不加入）
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= sum; j++ {
-			if (j - nums[i-1]) < 0 { // 背包容量不足，不能装入第i个物品
+			if (j - nums[i-1]) < 0 {
+				// 当前元素值大于想要凑出的总和，故不能加入，直接继承不选当前元素的结果
 				dp[i][j] = dp[i-1][j]
 			} else {
-				// 装入或者不装入背包
+				// 装入结果：若装入当前元素可以凑出想要的总和，则为true；亦或是不装入当前元素也可以凑出想要的总和，则为true
+				// 装入当前元素后，只要dp[i-1][j-nums[i-1]]=true（用前i-1个元素可以凑出j-nums[i-1]）,则装入元素i之后，也可凑出j。
 				dp[i][j] = dp[i-1][j-nums[i-1]] || dp[i-1][j]
 			}
 		}

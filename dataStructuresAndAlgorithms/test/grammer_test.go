@@ -24,3 +24,9 @@ func changePointer(p **int) {
 	*p = &b
 	fmt.Printf("修改函数中【修改后】指针变量p为：%p\n", *p)
 }
+
+func TestMake(t *testing.T) {
+	var arr = make([][]int, 8)
+	fmt.Printf("length:%d capacity:%d", len(arr), cap(arr))
+	fmt.Printf("length:%d capacity:%d", len(arr[0]), cap(arr[0]))
+}

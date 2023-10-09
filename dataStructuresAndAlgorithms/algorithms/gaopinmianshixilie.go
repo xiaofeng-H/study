@@ -23,6 +23,7 @@ func CountPrimes(n int) int {
 	for i := 2; i*i < n; i++ {
 		if isPrime[i] {
 			for j := i * i; j < n; j += i {
+				// j从i平方开始，依次标记i的n倍（+i）不是素数
 				isPrime[j] = false
 			}
 		}
@@ -44,8 +45,9 @@ func CountPrimes(n int) int {
 
 /*
 快速模幂算法（力扣372）
-算法名称：
-算法思想：
+算法名称：快速模幂算法
+算法思想：模乘法规则---A^2 mod C = (A * A) mod C = ((A mod C) * (A mod C)) mod C
+参考链接：https://zh.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/fast-modular-exponentiation
 时间复杂度：O()
 */
 const base int = 1337
@@ -357,8 +359,9 @@ func longestPalindrome5(s string) string {
 	return res
 }
 
+/*======================================贪心算法 start============================================*/
 /*
-跳跃游戏（力扣55）
+跳跃游戏Ⅰ：是否可以从开始位置跳跃到末尾位置（力扣55）
 算法思想：贪心
 时间复杂度：O(N)
 空间复杂度：O(1)
@@ -392,7 +395,7 @@ func canJump55(nums []int) bool {
 }
 
 /*
-跳跃游戏2（力扣45）
+跳跃游戏Ⅱ：从开始位置跳到末尾位置最少需要跳多少次（默认可达）（力扣45）
 算法思想：贪心
 时间复杂度：O(N)
 空间复杂度：O(1)
@@ -416,6 +419,8 @@ func jump45(nums []int) int {
 	}
 	return jump
 }
+
+/*======================================贪心算法 end============================================*/
 
 /*
 k个一组反转链表（力扣25）

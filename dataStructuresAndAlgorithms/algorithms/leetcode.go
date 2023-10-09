@@ -470,7 +470,7 @@ func isValidLeetCode(board [][]byte, row, col int) bool {
 
 /*======================================回溯 end============================================*/
 
-/*======================================滑动串口start============================================*/
+/*======================================滑动窗口 start============================================*/
 /*
 「力扣」第 76 题（最小覆盖子串）
 给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。
@@ -484,35 +484,27 @@ func isValidLeetCode(board [][]byte, row, col int) bool {
 */
 /*
 滑动窗⼝算法的思路是这样：
-1、我们在字符串  S  中使⽤双指针中的左右指针技巧，初始化  left =
-right = 0  ，把索引左闭右开区间  [left, right)  称为⼀个「窗⼝」。
-2、我们先不断地增加  right  指针扩⼤窗⼝  [left, right)  ，直到窗⼝中
-的字符串符合要求（包含了  T  中的所有字符）。
-3、此时，我们停⽌增加  right  ，转⽽不断增加  left  指针缩⼩窗⼝
-[left, right)  ，直到窗⼝中的字符串不再符合要求（不包含  T  中的所有
-字符了）。同时，每次增加  left  ，我们都要更新⼀轮结果。
-4、重复第 2 和第 3 步，直到  right  到达字符串  S  的尽头。
+1、我们在字符串 S 中使⽤双指针中的左右指针技巧，初始化 left = right = 0，把索引左闭右开区间 [left, right) 称为⼀个「窗⼝」。
+2、我们先不断地增加 right 指针扩⼤窗⼝ [left, right)，直到窗⼝中的字符串符合要求（包含了 T 中的所有字符）。
+3、此时，我们停⽌增加 right，转⽽不断增加 left 指针缩⼩窗⼝ [left, right)，直到窗⼝中的字符串不再符合要求（不包含 T 中的所有
+字符了）。同时，每次增加 left，我们都要更新⼀轮结果。
+4、重复第 2 和第 3 步，直到 right 到达字符串 S 的尽头。
 */
 func MinWindow76(s string, t string) string {
-	// 首先，初始化window和need两个哈希表，记录窗口中的字符和需要凑齐的字符
-	var need, window map[byte]int
-	need = make(map[byte]int)
-	window = make(map[byte]int)
+	// 1.首先，初始化window和need两个哈希表，记录窗口中的字符和需要凑齐的字符
+	var need, window = make(map[byte]int), make(map[byte]int)
 	for i := range t {
 		need[t[i]]++
 	}
-	// 然后，使用left和right变量初始化窗口的两端，不要忘了，区间[left,right)
-	// 是左闭右开的，所以初始情况下窗口没有包含任何元素
-	left := 0
-	right := 0
-	// valid变量表示窗口中满足need条件的字符个数，如果valid和len(need)的大小相同，
-	// 则说明窗口已满足条件，已经完全覆盖了串t
+	// 2.然后，使用left和right变量初始化窗口的两端，不要忘了，区间[left,right)是左闭右开的，所以初始情况下窗口没有包含任何元素
+	left, right := 0, 0
+	// valid变量表示窗口中满足need条件的字符个数，如果valid和len(need)的大小相同，则说明窗口已满足条件，已经完全覆盖了串t
 	valid := 0
 	// 记录最小覆盖子串的起始索引及长度
-	start := 0
-	length := math.MaxInt32
+	start, minLength := 0, math.MaxInt32
+	// 3.滑动窗口
 	for right < len(s) {
-		// c 是将移入窗口的字符
+		// c 是下一个进入窗口的字符
 		c := s[right]
 		// 右移窗口
 		right++
@@ -527,9 +519,9 @@ func MinWindow76(s string, t string) string {
 		// 判断左侧窗口是否要收缩
 		for valid == len(need) {
 			// 在这里更新最小覆盖子串
-			if right-left < length {
+			if right-left < minLength {
 				start = left
-				length = right - left
+				minLength = right - left
 			}
 			// d 是将移出窗口的字符
 			d := s[left]
@@ -545,25 +537,24 @@ func MinWindow76(s string, t string) string {
 		}
 	}
 	// 返回最小覆盖子串
-	if length == math.MaxInt32 {
+	if minLength == math.MaxInt32 {
 		return ""
 	} else {
-		return s[start : start+length]
+		return s[start : start+minLength]
 	}
 }
 
 /*
 「力扣」第 567 题（字符串的排列）
-给你两个字符串 s1 和 s2 ，写一个函数来判断 s2 是否包含 s1 的排列。如果是，返回 true ；否则，返回 false 。
-换句话说，s1 的排列之一是 s2 的 子串 。
+给你两个字符串 s1 和 s2，写一个函数来判断 s2 是否包含 s1 的排列。如果是，返回 true；否则，返回 false。
+换句话说，s1 的排列之一是 s2 的子串。
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/permutation-in-string
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 func CheckInclusion567(s1 string, s2 string) bool {
 	// 初始化数据
-	need := make(map[byte]int)
-	window := make(map[byte]int)
+	var need, window = make(map[byte]int), make(map[byte]int)
 	for e := range s1 {
 		need[s1[e]]++
 	}
@@ -604,7 +595,7 @@ func CheckInclusion567(s1 string, s2 string) bool {
 
 /*
 「力扣」第 438 题（找到字符串中所有字母异位词）
-给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+给定两个字符串 s 和 p，找到 s 中所有 p 的异位词的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
 异位词 指由相同字母重排列形成的字符串（包括相同的字符串）。
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/find-all-anagrams-in-a-string
@@ -612,8 +603,7 @@ func CheckInclusion567(s1 string, s2 string) bool {
 */
 func FindAnagrams438(s string, p string) []int {
 	// 初始化数据
-	window := make(map[byte]int)
-	need := make(map[byte]int)
+	var need, window = make(map[byte]int), make(map[byte]int)
 	for k := range p {
 		need[p[k]]++
 	}
@@ -655,7 +645,7 @@ func FindAnagrams438(s string, p string) []int {
 
 /*
 「力扣」第 3 题（无重复字符的最长子串）
-给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
+给定一个字符串 s，请你找出其中不含有重复字符的最长子串的长度。
 */
 func LengthOfLongestSubstring3(s string) int {
 	// 空串处理
@@ -693,7 +683,7 @@ func LengthOfLongestSubstring3(s string) int {
 	return res
 }
 
-/*======================================滑动串口end============================================*/
+/*======================================滑动窗口 end============================================*/
 
 /*======================================BFS start============================================*/
 /*
@@ -742,7 +732,8 @@ func MinDepth111(root *TreeNode) int {
 
 /*
 「力扣」第 752 题（打开转盘锁）
-你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' 。每个拨轮可以自由旋转：例如把 '9' 变为 '0'，'0' 变为 '9' 。每次旋转都只能旋转一个拨轮的一位数字。
+你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' 。
+每个拨轮可以自由旋转：例如把 '9' 变为 '0'，'0' 变为 '9' 。每次旋转都只能旋转一个拨轮的一位数字。
 锁的初始数字为 '0000' ，一个代表四个拨轮的数字的字符串。
 列表 deadends 包含了一组死亡数字，一旦拨轮的数字和列表里的任何一个元素相同，这个锁将会被永久锁定，无法再被旋转。
 字符串 target 代表可以解锁的数字，你需要给出解锁需要的最小旋转次数，如果无论如何不能解锁，返回 -1 。
@@ -750,6 +741,11 @@ func MinDepth111(root *TreeNode) int {
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/open-the-lock
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+*/
+/*
+再读有感：（2023/10/9 15:32）（优化版的转盘操作处理不背下来的话就太亏了）
+使用回溯也可以解决该问题，但是用回溯的话得遍历所有的可能的路径，记录最短路径以求最优解。
+此处使用 BFS 可以少走非最优解的路径，使其第一次得到的路径便就是最优解，效率明显高于回溯。
 */
 // 将s[j]向上拨动一次
 func plusOne(s string, j int) string {
@@ -855,6 +851,7 @@ func openLock(deadends []string, target string) int {
 			visitedMap[node] = true // 将该点标记为访问过
 
 			for j := 0; j < len(node); j++ { // 通过遍历当前字符串，找出它的所有子节点，安排入列
+				// 卧槽，这不背下来有点亏（2023/10/9 15:27）
 				num := int(node[j] - '0')                             // 获取当前的数字num
 				up := (num + 1) % 10                                  // 往上拧所得的新数，比如1变成2
 				down := (num + 9) % 10                                // 往下拧所得的新数，比如7变成6
@@ -930,8 +927,13 @@ func OpenLockBothway752(deadends []string, target string) int {
  *     Right *TreeNode
  * }
  */
-// 递归初识
-// 给他⼀个节点和⼀个⽬标值，他返回以这个节点为根的树 中，和为⽬标值的路径总数
+/*
+「力扣」第 437 题（路径之和Ⅲ）
+给定一个二叉树，它的每个结点都存放着一个整数值。
+找出路径和等于给定数值的路径总数。
+路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的(只能从父节点到子节点)。
+*/
+// 给他⼀个节点和⼀个⽬标值，他返回以这个节点为根的树中路径结点值之和为⽬标值的路径总数
 func pathSum437(root *TreeNode, targetSum int) int {
 	// 递归结束条件
 	if root == nil {
