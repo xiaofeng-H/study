@@ -74,11 +74,11 @@ func BubbleSortDoubleDirection(arr []int) {
 
 /**
  * 快速排序
- * 算法思想：
+ * 算法思想：分治
  * 稳定性：不稳定排序
- * 时间复杂度：O(n*log2n)---最坏情况：O(n^2);最好情况：O(n*log2n)
- * 空间复杂度：O(log2n)
- * 适用场景：待排序列越接近无序，效率越高。快速排序的排序趟数和初始序列有关。与同级别时间复杂度都为O(n*log2n)的排序算法相比，
+ * 时间复杂度：O(n*lgn)---最坏情况：O(n^2);最好情况：O(n*lgn)
+ * 空间复杂度：O(lgn)
+ * 适用场景：待排序列越接近无序，效率越高。快速排序的排序趟数和初始序列有关。与同级别时间复杂度都为O(n*lgn)的排序算法相比，
  * 			该算法的基本操作的最高次项的系数最小，效率最高，故而称为快速排序。
  */
 func QuickSort(a []int, low int, high int) {
@@ -114,13 +114,12 @@ func QuickSort(a []int, low int, high int) {
 		}
 		// 循环结束，i==j，该位置为当前枢轴的最终位置，将tmp放在该位置
 		a[i] = tmp
+		// 打印划分结果
+		fmt.Println("快速排序划分后为：")
+		algorithms.PrintArray(a)
 		// 递归地对tmp左边的关键字进行排序
 		QuickSort(a, low, i-1)
 		// 递归地对tmp右边的关键字进行排序
 		QuickSort(a, i+1, high)
 	}
-
-	// 打印结果
-	fmt.Println("快速排序后的结果为：")
-	algorithms.PrintArray(a)
 }

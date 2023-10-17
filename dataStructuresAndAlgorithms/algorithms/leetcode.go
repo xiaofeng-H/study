@@ -5,7 +5,6 @@ import (
 	"math"
 	"strconv"
 	"strings"
-	sort2 "study/dataStructuresAndAlgorithms/algorithms/sort"
 	. "study/dataStructuresAndAlgorithms/dataStructures"
 )
 
@@ -1011,7 +1010,7 @@ func TwoSum1(nums []int, target int) []int {
 // 解法二：左右指针，要求原始数组有序
 func TwoSum2(nums []int, target int) []int {
 	// 首先对原始数组排序使之有序
-	sort2.BubbleSort(nums)
+	// sort(nums)
 	// 然后进行左右指针扫描
 	left, right := 0, len(nums)-1
 	for left < right {
