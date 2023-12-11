@@ -59,7 +59,7 @@ func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 	for i := 1; i <= N; i++ {
 		for w := 1; w <= W; w++ {
 			// w：当前背包容量；wt[i-1]：当前准备加入的物品的体积
-			if (w - wt[i-1]) < 0 {
+			if w <= wt[i-1] {
 				// 1.若当前物品体积大于背包总容量，则不能装入背包
 				dp[i][w] = dp[i-1][w]
 			} else {
@@ -139,7 +139,7 @@ func CompleteKnapsackProblem(amount int, coins []int) int {
 	// 状态转移
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= amount; j++ {
-			if (j - coins[i-1]) >= 0 {
+			if j >= coins[i-1] {
 				// 该面值的硬币可供本次选择
 				/*
 					当能使用该面值的硬币时，总共的凑法便是不使用该硬币凑出目标金额的凑法和使用该面值硬币，
@@ -291,7 +291,7 @@ func ClimbStairs70(n int) int {
 /*
 「力扣」第 322 题（零钱兑换）
 给你一个整数数组 coins，表示不同面额的硬币；以及一个整数 amount，表示总金额。
-计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
+计算并返回可以凑成总金额所需的 最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
 你可以认为每种硬币的数量是无限的。
 */
 func coinChange322(coins []int, amount int) int {
@@ -309,8 +309,8 @@ func coinChange322(coins []int, amount int) int {
 	for i := 0; i < len(dp); i++ {
 		// 内层for循环在求所有子问题+1的最小值
 		for _, v := range coins {
-			// 子问题无解，跳过
-			if i-v < 0 {
+			// 子问题无解，跳过（i：当前总金额；v：当前硬币面值。当前面值大于总金额则不能选择该面值硬币）
+			if i < v {
 				continue
 			}
 			dp[i] = MinIntAB(dp[i], 1+dp[i-v])
@@ -416,7 +416,7 @@ func canPartition416(nums []int) bool {
 	// 2.2 状态转移（加入或不加入）
 	for i := 1; i <= n; i++ {
 		for j := 1; j <= sum; j++ {
-			if (j - nums[i-1]) < 0 {
+			if j < nums[i-1] {
 				// 当前元素值大于想要凑出的总和，故不能加入，直接继承不选当前元素的结果
 				dp[i][j] = dp[i-1][j]
 			} else {
