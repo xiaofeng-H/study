@@ -20,27 +20,7 @@ func Opt(a int, b int, opt rune) int {
 	}
 }
 
-// 注意：GO语言抛弃了三元运算符，以下写法是错误的
-//return a > b ? a : b
-// 求两个数（int）的较大者
-func MaxIntAB(a, b int) int {
-	if a > b {
-		return a
-	} else {
-		return b
-	}
-}
-
-// 求两个数（int）的较小者
-func MinIntAB(a, b int) int {
-	if a < b {
-		return a
-	} else {
-		return b
-	}
-}
-
-//遍历数组且输出数值方法
+// 遍历数组且输出数值方法
 func PrintArray(a []int) {
 	for i := 0; i < len(a); i++ {
 		fmt.Printf("%d\t", a[i])

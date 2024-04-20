@@ -64,7 +64,7 @@ func zeroOneKnapsackProblem(W, N int, wt, val []int) int {
 				dp[i][w] = dp[i-1][w]
 			} else {
 				// 2.否则，择优选择装入或者不装入背包
-				dp[i][w] = MaxIntAB(dp[i-1][w], dp[i-1][w-wt[i-1]]+val[i-1])
+				dp[i][w] = max(dp[i-1][w], dp[i-1][w-wt[i-1]]+val[i-1])
 			}
 		}
 	}
@@ -221,16 +221,16 @@ func minDistance(word1 string, word2 string) int {
 			if word1[i-1] == word2[j-1] {
 				dp[i][j] = dp[i-1][j-1]
 			} else {
-				dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+1)
+				dp[i][j] = min3(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+1)
 			}
 
 		}
 	}
-	// 储存着整个word1和word2的最小编辑距离
+	// 储存着整个word1和word2的最小编辑距离	`
 	return dp[m][n]
 }
-func min(a, b, c int) int {
-	return MinIntAB(a, MinIntAB(b, c))
+func min3(a, b, c int) int {
+	return min(a, min(b, c))
 }
 
 /*
@@ -313,7 +313,7 @@ func coinChange322(coins []int, amount int) int {
 			if i < v {
 				continue
 			}
-			dp[i] = MinIntAB(dp[i], 1+dp[i-v])
+			dp[i] = min(dp[i], 1+dp[i-v])
 		}
 	}
 	if dp[amount] == amount+1 {
@@ -358,7 +358,7 @@ func lengthOfLIS300(nums []int) int {
 	for i := 0; i < n; i++ {
 		for j := 0; j < i; j++ {
 			if nums[i] > nums[j] {
-				dp[i] = MaxIntAB(dp[i], dp[j]+1)
+				dp[i] = max(dp[i], dp[j]+1)
 			}
 		}
 	}
@@ -462,6 +462,141 @@ func canPartition(nums []int) bool {
 		}
 	}
 	return dp[sum]
+}
+
+/*
+「力扣」第 122 题（买卖股票的最佳时机Ⅱ）
+给你一个整数数组 prices ，其中 prices[i] 表示某支股票第 i 天的价格。
+在每一天，你可以决定是否购买和/或出售股票。你在任何时候 最多 只能持有 一股 股票。你也可以先购买，然后在 同一天 出售。
+返回 你能获得的 最大 利润 。
+时间复杂度：O()
+空间复杂度：O()
+*/
+func maxProfit122(prices []int) int {
+	/* 题解：
+	   Ⅰ：在某一天买入股票后，只能在未来某的一天卖出，然后求出最大利润。
+	   注意：Ⅰ中在要求的天数中只能操作某一支股票
+	   Ⅱ：在本题设要求下，是允许操作多支股票来获取最大利润的，前提是在操作手中的
+	   第二支股票的时候，上一支股票必须先抛出，即手中只能持有一只股票。仔细看了下
+	   示例，这不就是在求《最长递增子序列》么！开搞开搞。。。
+	*/
+
+	var days = len(prices)
+	if days <= 1 {
+		return 0
+	}
+	// dp[i]:第i天可获得的最大利润
+	var dp = make([]int, days)
+	dp[0] = 0
+	// 已某天为一个截至日期，则在该截止日期可获得的最大利润
+	var pro = 0
+	// 利润和
+	var sum = 0
+
+	// 动规（哈哈哈 都不知道算不算动规了，感觉都快成暴力了）
+	var v = 0 // 当日股价
+	for i := 1; i < days; i++ {
+		// 局部变量初始化
+		v = prices[i] // 当日股价
+		pro = 0       // 利润初始值
+		// 计算以i天为截至日期，则可获得的最高利润（遍历直到该天已被操作或到达第一天）
+		for j := i - 1; j >= 0; j-- {
+			if dp[j] > 0 {
+				// j天为一个此前的一个截至日期，此时需要检测需不需要合并（求合并与否的利润最大值）
+				if pro < v-prices[j] {
+					// 到上一个截止日期为止（不包含该天），若可得利润小于当日股价与上一个截至日期股价的插值（即利润），
+					// 则需要合并这两个小利润周期。因为dp[j]已经记录了第j天的最大利润，故不需要向前遍历。
+					// 执行合并操作
+					pro = v - prices[j] + dp[j] // 计算合并后的利润
+					dp[j] = 0                   // 消除该利润周期
+				}
+				break
+			}
+			// 计算目前利润周期可获得的最大利润
+			pro = max(pro, v-prices[j])
+		}
+		dp[i] = pro
+	}
+
+	// 求利润和
+	for _, v := range dp {
+		sum += v
+	}
+
+	return sum
+}
+
+/*
+「力扣」第 123 题（买卖股票的最佳时机Ⅲ）
+给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
+设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
+注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+时间复杂度：O()
+空间复杂度：O()
+*/
+func maxProfit123(prices []int) int {
+	/* 题解：
+	   怎么感觉可以用我解决Ⅱ用的代码呀！
+	   eee，其实是不一样的。
+	*/
+
+	var days = len(prices)
+	if days <= 1 {
+		return 0
+	}
+	// dp[i]:第i天可获得的最大利润
+	var dp = make([]int, days)
+	dp[0] = 0
+	// 以某天为一个截至日期，则在该截止日期可获得的最大利润
+	var pro = 0
+	// 合并后的利润
+	var mPro = 0
+
+	// 动规（哈哈哈 都不知道算不算动规了，感觉都快成暴力了）
+	for i := 1; i < days; i++ {
+		// 局部变量初始化
+		pro = 0 // 利润初始值
+		mPro = 0
+		// 计算已i天为截至日期，则可获得的最高利润（遍历直到该天已被操作或到达第一天）
+		for j := i - 1; j >= 0; j-- {
+			// 计算目前利润周期可获得的最大利润
+			pro = max(pro, prices[i]-prices[j])
+			if dp[j] > 0 {
+				// j天为一个此前的一个截至日期，此时需要检测需不需要合并（求合并与否的利润最大值）
+				mPro = prices[i] - prices[j] + dp[j] // 计算合并后的利润
+				if pro < mPro {
+					// 到上一个截止日期为止（不包含该天），若可得利润小于当日股价与上一个截至日期股价的插值（即利润），
+					// 则需要合并这两个小利润周期。因为dp[j]已经记录了第j天的最大利润，故不需要向前遍历。
+					// 执行合并操作
+					pro = mPro
+					dp[j] = 0 // 消除该利润周期
+				}
+			}
+		}
+		dp[i] = pro
+	}
+
+	// 求利润和（利润最大的两笔）
+	if days < 2 {
+		return dp[0]
+	}
+	tmp := 0
+	index := 0
+	for i := 0; i < 2; i++ {
+		tmp = dp[i]
+		index = i
+		for j := i; j < days; j++ {
+			if dp[j] > tmp {
+				tmp = dp[j]
+				index = j
+			}
+		}
+		// 交换
+		dp[index] = dp[i]
+		dp[i] = tmp
+	}
+
+	return dp[0] + dp[1]
 }
 
 /*======================================动态规划 end============================================*/
