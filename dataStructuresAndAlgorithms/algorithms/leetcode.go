@@ -381,6 +381,113 @@ func containsInt(arr []int, target int) bool {
 	return false
 }
 
+// 数组长度
+var n int
+
+// 全排列结果集
+var pmts [][]int
+
+func permute(nums []int) [][]int {
+	/*
+	   题解：经典回溯算法
+	   都见了39次了，直接默写
+	*/
+
+	// 初始化
+	n = len(nums)
+	pmts = make([][]int, 0, n)
+	trace := make([]int, 0, n) // 记录已选的路径
+
+	// 开始回溯
+	backTrace(nums, trace)
+
+	// 返回结果
+	return pmts
+}
+
+// 回溯
+func backTrace(nums []int, trace []int) {
+	// 记录全排列
+	if len(trace) == n {
+		tmp := make([]int, n)
+		for k, v := range trace {
+			tmp[k] = v
+		}
+		pmts = append(pmts, tmp)
+		return
+	}
+
+	for i := 0; i < n; i++ {
+		cur := nums[i]
+		// 判断当前元素是否已经被选择
+		flag := false
+		for _, v := range trace {
+			if v == cur {
+				flag = true
+				break
+			}
+		}
+		if flag {
+			continue
+		}
+
+		// 选择元素
+		trace = append(trace, cur)
+
+		// 回溯
+		backTrace(nums, trace)
+
+		// 撤销选择
+		trace = trace[:len(trace)-1]
+	}
+}
+
+/*
+// 妹的就离谱，为啥用map记录路径就是不行，语法理解有问题（2024/5/8 10:25）
+func permute(nums []int) [][]int {
+	// 初始化
+	n = len(nums)
+	pmts = make([][]int, 0, n)
+	trace := make(map[int]bool, n) // 记录已选的路径
+
+	// 开始回溯
+	backTrace(nums, trace)
+
+	// 返回结果
+	return pmts
+}
+
+// 回溯
+func backTrace(nums []int, trace map[int]bool) {
+	// 记录全排列
+	if len(trace) == n {
+		tmp := make([]int, 0)
+		for k := range trace {
+			tmp = append(tmp, k)
+		}
+		pmts = append(pmts, tmp)
+		return
+	}
+
+	for i := 0; i < n; i++ {
+		cur := nums[i]
+		// 判断当前元素是否已经被选择
+		if _, ok := trace[cur]; ok {
+			continue
+		}
+
+		// 选择元素
+		trace[cur] = true
+
+		// 回溯
+		backTrace(nums, trace)
+
+		// 撤销选择
+		delete(trace, cur)
+	}
+}
+*/
+
 /*
 「力扣」第 51 题（N皇后）
 */

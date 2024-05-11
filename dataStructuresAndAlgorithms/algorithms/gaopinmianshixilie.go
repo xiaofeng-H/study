@@ -210,7 +210,7 @@ func trapRemember42(height []int) int {
 	}
 	// 计算答案
 	for i := 1; i < n-1; i++ {
-		ans += MinIntAB(lMax[i], rMax[i]) - height[i]
+		ans += min(lMax[i], rMax[i]) - height[i]
 	}
 	return ans
 }
@@ -489,6 +489,59 @@ func reverseKGroup25(head *ListNode, k int) *ListNode {
 	// 反转之后a到末尾，b的前驱结点到开头，即newHead。下次反转从b开始。
 	a.Next = reverseKGroup25(b, k)
 	return newHead
+}
+
+/* 自己瞎鸡儿实现的代码，简直就是一坨屎（2024/4/23 17:58）*/
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	/* 题解：
+	   都见了39次了，直接默写！
+	*/
+
+	// 边界值处理
+	if k == 1 {
+		return head
+	}
+
+	// 反转开始
+	a := head
+	b := a
+	head = nil
+	var cur, tail *ListNode
+	i := 1
+	for b != nil {
+		cur = b.Next
+		if i%k == 0 {
+			reverseA2B(a, b)
+			if head == nil {
+				head = b
+			} else {
+				tail.Next = b
+			}
+			tail = a
+			tail.Next = cur
+			a = cur
+		}
+		i++
+		b = cur
+	}
+	return head
+}
+
+// 反转以A开始，以B结尾的字符串
+func reverseA2B(a, b *ListNode) {
+	// 头插法反转链表
+	tail := a     // 反转后的尾结点
+	cur := a.Next // 待插入的结点
+	a.Next = nil
+	var next *ListNode
+	for cur != b {
+		next = cur.Next
+		cur.Next = a
+		a = cur
+		cur = next
+	}
+	cur.Next = a
+	a = tail
 }
 
 /*

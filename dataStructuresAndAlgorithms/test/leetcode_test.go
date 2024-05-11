@@ -30,3 +30,8 @@ func TestLeetCode46(t *testing.T) {
 	permute46 := algorithms.Permute46(arr)
 	fmt.Println(permute46)
 }
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
