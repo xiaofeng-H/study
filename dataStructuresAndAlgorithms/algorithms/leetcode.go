@@ -591,8 +591,8 @@ func isValidLeetCode(board [][]byte, row, col int) bool {
 func MinWindow76(s string, t string) string {
 	// 1.首先，初始化 window 和 need 两个哈希表，记录窗口中的字符和需要凑齐的字符
 	var need, window = make(map[byte]int), make(map[byte]int)
-	for i := range t {
-		need[t[i]]++
+	for _, v := range t {
+		need[byte(v)]++
 	}
 	// 2.然后，使用 left 和 right 变量初始化窗口的两端，不要忘了，区间 [left,right) 是左闭右开的，所以初始情况下窗口没有包含任何元素
 	left, right := 0, 0
@@ -653,8 +653,8 @@ func MinWindow76(s string, t string) string {
 func CheckInclusion567(s1 string, s2 string) bool {
 	// 初始化数据
 	var need, window = make(map[byte]int), make(map[byte]int)
-	for e := range s1 {
-		need[s1[e]]++
+	for _, v := range s1 {
+		need[byte(v)]++
 	}
 	var left, right, valid int = 0, 0, 0
 
@@ -702,8 +702,8 @@ func CheckInclusion567(s1 string, s2 string) bool {
 func FindAnagrams438(s string, p string) []int {
 	// 初始化数据
 	var need, window = make(map[byte]int), make(map[byte]int)
-	for k := range p {
-		need[p[k]]++
+	for _, v := range p {
+		need[byte(v)]++
 	}
 	left, right, valid := 0, 0, 0
 	// 所求子串的起始索引结果集
@@ -782,6 +782,11 @@ func LengthOfLongestSubstring3(s string) int {
 }
 
 /*====================================== 滑动窗口 end ============================================*/
+
+/**
+上周末心血来潮，想来一嘴自己炒的帝王级土豆丝，可现在，我正逛着淘宝寻找一款精美绝伦的土豆刨丝器。时光荏苒，好多东西都
+生疏淡忘了，唯独记忆中的你却逃此一劫。
+*/
 
 /*====================================== BFS start ============================================*/
 /**
@@ -944,7 +949,8 @@ func openLock(deadends []string, target string) int {
 	}
 
 	q := []string{"0000"} // 队列q
-	for len(q) > 0 {      // 循环直至队列为空
+	// 两层循环实为BFS遍历框架
+	for len(q) > 0 { // 循环直至队列为空
 		size := len(q)              // 获取BFS当前level的节点个数
 		for i := 0; i < size; i++ { // 遍历当前层的节点
 			// 用 Golang slice 实现队列操作
@@ -967,7 +973,7 @@ func openLock(deadends []string, target string) int {
 				up := (num + 1) % 10                                  // 往上拧所得的新数，比如1变成2
 				down := (num + 9) % 10                                // 往下拧所得的新数，比如7变成6
 				q = append(q, node[:j]+strconv.Itoa(up)+node[j+1:])   // 拼成新字符串，入列
-				q = append(q, node[:j]+strconv.Itoa(down)+node[j+1:]) // 拼成新字符串 入列
+				q = append(q, node[:j]+strconv.Itoa(down)+node[j+1:]) // 拼成新字符串，入列
 			}
 		}
 		step++ // 当前层的所有节点遍历完毕，层次+1
@@ -1070,12 +1076,11 @@ func count(node *TreeNode, sum int) int {
 	}
 
 	// 我自己能不能独当一面，作为一条单独的路径呢？
-	var isMe int
+	var isMe int = 0
 	if node.Val == sum {
 		isMe = 1
-	} else {
-		isMe = 0
 	}
+
 	// 左边的小老弟，你那边能凑出几个 sum - node.Val 呀？
 	leftBrother := count(node.Left, sum-node.Val)
 	// 右边的小老弟，你那边能凑出几个 sum - node.Val 呀？
@@ -1197,29 +1202,29 @@ func CountElements2148(nums []int) int {
 	// 满足同时具有严格较小值和严格较大值元素的数目
 	var num int
 	// 元素最小值
-	min := int(1e5)
+	minValue := int(1e5)
 	// 最小值个数
 	var minNum int
 	// 元素最大值
-	max := int(-1e5)
+	maxValue := int(-1e5)
 	// 最大值个数
 	var maxNum int
 
 	// 开始统计
 	for i := 0; i < len(nums); i++ {
 		// 统计最小值个数
-		if nums[i] == min {
+		if nums[i] == minValue {
 			minNum++
-		} else if nums[i] < min {
-			min = nums[i]
+		} else if nums[i] < minValue {
+			minValue = nums[i]
 			minNum = 1
 		}
 
 		// 统计最大值个数
-		if nums[i] == max {
+		if nums[i] == maxValue {
 			maxNum++
-		} else if nums[i] > max {
-			max = nums[i]
+		} else if nums[i] > maxValue {
+			maxValue = nums[i]
 			maxNum = 1
 		}
 	}
@@ -1227,7 +1232,7 @@ func CountElements2148(nums []int) int {
 	if len(nums) <= 2 {
 		num = 0
 	} else {
-		if min == max {
+		if minValue == maxValue {
 			num = 0
 		} else {
 			num = len(nums) - minNum - maxNum
@@ -1306,15 +1311,23 @@ func reverseList206(head *ListNode) *ListNode {
 		return nil
 	}
 
-	// 头插法
-	var q *ListNode = nil
-	for head != nil {
-		p := head.Next
-		head.Next = q
-		q = head
-		head = p
+	// 头插法头结点
+	var pre *ListNode = nil
+	// 当前处理结点
+	var cur *ListNode = head
+	// 当前结点的下一个结点
+	var next *ListNode
+
+	// 头插法逆置
+	for cur != nil {
+		next = cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = next
 	}
-	return q
+
+	// 返回头结点
+	return pre
 }
 
 /*

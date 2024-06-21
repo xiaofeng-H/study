@@ -93,13 +93,13 @@ func SuperPow372(a int, b []int) int {
 */
 // 取数组的最大值
 func getMax(arr []int) int {
-	max := -1
+	maxValue := arr[0]
 	for _, v := range arr {
-		if v > max {
-			max = v
+		if v > maxValue {
+			maxValue = v
 		}
 	}
-	return max
+	return maxValue
 }
 
 // 时间复杂度：O(N)
@@ -429,6 +429,8 @@ func jump45(nums []int) int {
 	在选择跳跃的距离时，我们贪心地选择当前这个由上一跳可达的位置中跳的最远的位置。
 	*/
 	for i := 0; i < n-1; i++ {
+		// 每次 for 循环都计算最大可达距离，其实是在方便到达边界时迅速知道下一跳可达的最大距离，
+		// 免得到达当前跳跃的边界之后，再去遍历上一跳可达位置上最大可达距离，有点动规的意思了。
 		farthest = func(a, b int) int {
 			if a > b {
 				return a
@@ -468,6 +470,7 @@ func reverse(a, b *ListNode) *ListNode {
 	return pre
 }
 
+// 我只能说：递归牛逼（这写法我一辈子都学不会）（2024/5/14 11:24）
 func reverseKGroup25(head *ListNode, k int) *ListNode {
 	if head == nil {
 		return nil
@@ -491,7 +494,7 @@ func reverseKGroup25(head *ListNode, k int) *ListNode {
 	return newHead
 }
 
-/* 自己瞎鸡儿实现的代码，简直就是一坨屎（2024/4/23 17:58）*/
+/* 自己瞎鸡儿实现的代码，简直就是一坨屎，还累个半死，法克！（2024/4/23 17:58）*/
 func reverseKGroup(head *ListNode, k int) *ListNode {
 	/* 题解：
 	   都见了39次了，直接默写！
