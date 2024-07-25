@@ -1749,3 +1749,222 @@ func heapSort(arr [][2]int) {
 /*
 「力扣」第 2148 题（元素计数）
 */
+
+/*====================================== 代码随想录 start ============================================*/
+/*
+记《权游》：19年暮春，因为偶然间看到了Eddard（他可是最好的父亲呀！）被杀的视频而入坑，便不分昼夜看了已出版的所有剧集，那年我正在备考，一战仙交。
+后来，三战失利，又完完整整得看完一遍。而现在，我听着权游的音频，算起来都是第三遍了，可当Eddard被斩首的那一刻，居然还是害怕剧情继续演绎，不免心头颤动，叹息良久难以释怀。
+至于Stark兄妹，自打Winterfell一别，岂能料到再见会是这般艰辛:Robb早已不在人世，和他母亲一起，和他父亲一样；Jon已经死过一次；Sansa在一个又一个恶魔中辗转；
+Arya流落异乡苦头吃尽；Brandon已不再是那个喜好攀爬的少年；Rickon在重聚之际被射杀。他们兄妹的再会何其不易，又怎能不泪流满面呀！！！（2024/6/27 11:45）
+*/
+
+/*
+「力扣」第 704 题（二分查找）
+时间复杂度：O(lgN)
+*/
+func search704(nums []int, target int) int {
+	// 初始化左右边界
+	left := 0
+	right := len(nums) - 1
+
+	// 循环逐步缩小区间范围
+	for left <= right {
+		// 求区间中点
+		mid := left + (right-left)>>1
+
+		// 根据 nums[mid] 和 target 的大小关系
+		// 调整区间范围
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+
+	// 在输入数组内没有找到值等于 target 的元素
+	return -1
+}
+
+/*
+「力扣」第 35 题（搜索插入位置）
+时间复杂度：O(lgN)
+*/
+func searchInsert35(nums []int, target int) int {
+	var left, right, mid = 0, len(nums) - 1, 0
+	for left <= right {
+		mid = left + (right-left)>>1
+		if target == nums[mid] {
+			return mid
+		} else if target < nums[mid] {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+	return left
+}
+
+/*
+「力扣」第 977 题（有序数组的平方）
+时间复杂度：O(N)
+*/
+func sortedSquares977(nums []int) []int {
+	// 双指针（首尾指针）
+	var l, r = 0, len(nums) - 1
+	// 结果集
+	var res = make([]int, r+1, r+1)
+	var k = r
+	// 相向逼近（有点快排的味道了）
+	lv, rv := 0, 0
+	for l <= r {
+		lv = nums[l] * nums[l]
+		rv = nums[r] * nums[r]
+		if lv < rv {
+			res[k] = rv
+			r--
+		} else {
+			res[k] = lv
+			l++
+		}
+		k--
+	}
+	return res
+}
+
+/*
+「力扣」第 209 题（长度最小的子数组）
+时间复杂度：O(N)
+*/
+func minSubArrayLen209(target int, nums []int) int {
+	// 滑动窗口滑呀滑
+	var n = len(nums)
+	var slow, fast, sum, res = 0, 0, 0, n + 1
+	for fast < n {
+		sum += nums[fast]
+		// 为方便后续计算长度，此处先移动指针
+		fast++
+		for sum >= target {
+			res = min(res, fast-slow)
+			sum -= nums[slow]
+			slow++
+		}
+	}
+
+	// 若为初始值则证明无解
+	if res == n+1 {
+		return 0
+	}
+	return res
+}
+
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*
+「力扣」第  题（）
+时间复杂度：O(N*N)
+*/
+/*====================================== 代码随想录 end ============================================*/

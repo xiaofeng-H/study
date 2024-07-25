@@ -69,7 +69,6 @@ func myPow(a, k int) int {
 		sub := myPow(a, k/2)
 		return (sub * sub) % base
 	}
-
 }
 
 func SuperPow372(a int, b []int) int {
@@ -418,8 +417,8 @@ func canJump55(nums []int) bool {
 */
 func jump45(nums []int) int {
 	n := len(nums)
-	// end：上次更新最远可达的边界
-	// farthest：当前周期跳跃可达的最远位置
+	// end：上一跳最远可达的位置
+	// farthest 上一跳可达的位置进行下一跳可达的最远位置
 	// jump：到达当前位置最少的跳跃次数
 	end, farthest, jump := 0, 0, 0
 
